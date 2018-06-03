@@ -3,8 +3,8 @@
 read and think, write something
 
 2018 年
-[使用 ES7 中的 Decorator 来简化代码 frontend javascript](https://github.com/linchinghao/blog/issues/14)
-[使用 prettier 随心所欲写代码 frontend](https://github.com/linchinghao/blog/issues/13)
+[使用 ES7 中的 Decorator 来简化代码 frontend javascript](https://github.com/linchinghao/blog/issues/14)  
+[使用 prettier 随心所欲写代码 frontend](https://github.com/linchinghao/blog/issues/13)  
 [理解 ES6 的 Proxy](https://github.com/linchinghao/blog/issues/12)
 
 2017 年  

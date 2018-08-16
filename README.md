@@ -2,9 +2,19 @@
 
 read and think, write something
 
-2018 年  
+2018 年
+
+8月  
+[[译]Typescript中的装饰器与元数据反射(part4) ](https://github.com/linchinghao/blog/issues/18)  
+[[译]Typescript中的装饰器与元数据反射(part3) ](https://github.com/linchinghao/blog/issues/16)  
+[[译]Typescript中的装饰器与元数据反射(part2) ](https://github.com/linchinghao/blog/issues/16)  
+[[译]Typescript中的装饰器与元数据反射(part1) ](https://github.com/linchinghao/blog/issues/15)  
+
+7月  
 [使用 ES7 中的 Decorator 来简化代码 ](https://github.com/linchinghao/blog/issues/14)  
 [使用 prettier 随心所欲写代码](https://github.com/linchinghao/blog/issues/13)  
+
+5月  
 [理解 ES6 的 Proxy](https://github.com/linchinghao/blog/issues/12)
 
 2017 年  

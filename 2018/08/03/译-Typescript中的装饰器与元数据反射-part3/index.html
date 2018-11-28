@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Allin的博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          [译]Typescript中的装饰器与元数据反射(part3) - Allin的博客 | Allin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2018/08/03/译-Typescript中的装饰器与元数据反射-part3/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Allin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#decorator" title="decorator">decorator</a>
+                        
+                          <a class="tag" href="/tags/#Typescript" title="Typescript">Typescript</a>
+                        
+                          <a class="tag" href="/tags/#ts" title="ts">ts</a>
+                        
+                    </div>
+                    <h1>[译]Typescript中的装饰器与元数据反射(part3)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by linchinghao on
+                        2018-08-03
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>这个系列包含了一下几个部分：<br><a href="http://blog.wolksoftware.com/decorators-reflection-javascript-typescript" target="_blank" rel="noopener">第一部分：方法装饰器</a><br><a href="http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-ii" target="_blank" rel="noopener">第二部分：属性装饰器 &amp; 类装饰器</a><br><a href="http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-3" target="_blank" rel="noopener">第三部分：参数装饰器 &amp; 装饰器工厂</a><br><a href="http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-4" target="_blank" rel="noopener">第四部分：类型序列化 &amp; 元数据反射 API</a></p>
+<p>在这个系列前面的文章中，我们从学会了在<code>Typescript</code>如何实现那些装饰器。我们了解了类、方法、属性装饰器的是如何工作的。</p>
+<p>在这篇文章我们将学习:</p>
+<ul>
+<li>参数装饰器</li>
+<li>如何实现装饰器工厂</li>
+<li>如何实现可配置的装饰器</li>
+</ul>
+<p>我们将使用下面的类来展示这些概念。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  public name: string;</span><br><span class="line">  public surname: string;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(name : string, surname : string) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.surname = surname;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public saySomething(something : string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">" "</span> + <span class="keyword">this</span>.surname + <span class="string">" says: "</span> + something;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>让我们开始。</p>
+<h2 id="参数装饰器"><a href="#参数装饰器" class="headerlink" title="参数装饰器"></a>参数装饰器</h2><p>正如我们所知道的，属性装饰器的接口实现如下面实现的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">declare type ParameterDecorator = (</span><br><span class="line">  target: <span class="built_in">Object</span>,</span><br><span class="line">  propertyKey: string | symbol,</span><br><span class="line">  parameterIndex: number</span><br><span class="line">) =&gt; <span class="keyword">void</span></span><br></pre></td></tr></table></figure>
+<p>我们使用一个如下名为<code>logParameter</code>的参数装饰器:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  public name: string;</span><br><span class="line">  public surname: string;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(name : string, surname : string) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.surname = surname;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public saySomething(@logParameter something : string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">" "</span> + <span class="keyword">this</span>.surname + <span class="string">" says: "</span> + something;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当被编译成<code>Javascript</code>，<code>__decorate</code>方法被调用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(</span><br><span class="line">  Person.prototype,</span><br><span class="line">  <span class="string">'saySomething'</span>,</span><br><span class="line">  __decorate(</span><br><span class="line">    [__param(<span class="number">0</span>, logParameter)],</span><br><span class="line">    Person.prototype,</span><br><span class="line">    <span class="string">'saySomething'</span>,</span><br><span class="line">    <span class="built_in">Object</span>.getOwnPropertyDescriptor(Person.prototype, <span class="string">'saySomething'</span>)</span><br><span class="line">  )</span><br><span class="line">)</span><br><span class="line"><span class="keyword">return</span> Person</span><br></pre></td></tr></table></figure>
+<p>如果我们将其与前面的装饰器比较，我们可以假设因为调用了<code>Object.defineProperty()</code>方法，所以<code>saySomething</code>方法将被<code>__decorate</code>方法的返回值覆盖。不过，这种假设是错误的。</p>
+<p>如果我们检查上面的代码，我们会注意到一个名为<code>__param</code>的新函数。</p>
+<p><code>__param</code>方法是由<code>Typescript</code>编译器生成的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> __param =</span><br><span class="line">  <span class="keyword">this</span>.__param ||</span><br><span class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">index, decorator</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// return a decorator function (wrapper)</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">target, key</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// apply decorator (return is ignored)</span></span><br><span class="line">      decorator(target, key, index)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><code>__param</code>函数返回一个包装参数装饰器的函数。</p>
+<p>我们可以看到，当参数装饰器被调用时，它的返回值会被忽略。这意味着在调用<code>__decorate</code>函数时，它的返回值将不会覆盖原来的<code>saySomething</code>方法。</p>
+<p>这就是参数装饰器不返回值的原因。</p>
+<p><code>__param</code>函数的装饰器包装用于在闭包中存储参数的索引。索引只是参数列表中的位置。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">foo</span> </span>&#123;</span><br><span class="line">  <span class="comment">// foo index === 0</span></span><br><span class="line">  public foo(@logParameter foo: string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"bar"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// bar index === 1</span></span><br><span class="line">  public foobar(foo: string, @logParameter bar: string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"foobar"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们知道参数装饰器有三个参数：</p>
+<ul>
+<li>被装饰的类原型对象</li>
+<li>包含被装饰参数的方法名称</li>
+<li>被装饰参数的索引</li>
+</ul>
+<p>让我们来实现<code>logPeroperty</code>装饰器。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logParameter</span>(<span class="params">target: any, key: string, index: number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> metadataKey = <span class="string">`log_<span class="subst">$&#123;key&#125;</span>_parameters`</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(target[metadataKey])) &#123;</span><br><span class="line">    target[metadataKey].push(index)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    target[metadataKey] = [index]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的参数装饰器向类的原型对象添加了一个新属性(<code>metadataKey</code>)。这个新属性是一个数组，包含被修饰的参数的索引。我们可以将这个新属性看作元数据。</p>
+<p>参数装饰器不应该修改构造函数、方法或属性的行为。参数装饰器只能用于生成某些元数据。</p>
+<p>一旦元数据生成，我们可以使用其他装饰器访问它。比如，在下面的示例中，我们可以找到在第二部分中创建的方法装饰器的修改版本。</p>
+<p>原始版本在调用控制台时记录了函数名及其所有参数。</p>
+<p>新版本读取元数据，只打印被参数装饰器装饰的参数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  public name: string;</span><br><span class="line">  public surname: string;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(name : string, surname : string) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.surname = surname;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @logMethod</span><br><span class="line">  public saySomething(@logParameter something : string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">" "</span> + <span class="keyword">this</span>.surname + <span class="string">" says: "</span> + something;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logMethod</span>(<span class="params">target: Function, key: string, descriptor: any</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> originalMethod = descriptor.value;</span><br><span class="line">  descriptor.value = <span class="function"><span class="keyword">function</span> (<span class="params">...args: any[]</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> metadataKey = <span class="string">`__log_<span class="subst">$&#123;key&#125;</span>_parameters`</span>;</span><br><span class="line">    <span class="keyword">var</span> indices = target[metadataKey];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(indices)) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; args.length; i++) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (indices.indexOf(i) !== <span class="number">-1</span>) &#123;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">var</span> arg = args[i];</span><br><span class="line">          <span class="keyword">var</span> argStr = <span class="built_in">JSON</span>.stringify(arg) || arg.toString();</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;key&#125;</span> arg[<span class="subst">$&#123;i&#125;</span>]: <span class="subst">$&#123;argStr&#125;</span>`</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> result = originalMethod.apply(<span class="keyword">this</span>, args);</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> a = args.map(<span class="function"><span class="params">a</span> =&gt;</span> (<span class="built_in">JSON</span>.stringify(a) || a.toString())).join();</span><br><span class="line">      <span class="keyword">var</span> result = originalMethod.apply(<span class="keyword">this</span>, args);</span><br><span class="line">      <span class="keyword">var</span> r = <span class="built_in">JSON</span>.stringify(result);</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">`Call: <span class="subst">$&#123;key&#125;</span>(<span class="subst">$&#123;a&#125;</span>) =&gt; <span class="subst">$&#123;r&#125;</span>`</span>);</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> descriptor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在此系列的第四部分我们将会学习元数据：元数据反射 API。下面的内容我们只需要先了解。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logParameter</span>(<span class="params">target: any, key: string, index: number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> indices = <span class="built_in">Reflect</span>.getMetadata(<span class="string">`log_<span class="subst">$&#123;key&#125;</span>_parameters`</span>, target, key) || []</span><br><span class="line">  indices.push(index)</span><br><span class="line">  <span class="built_in">Reflect</span>.defineMetadata(<span class="string">`log_<span class="subst">$&#123;key&#125;</span>_parameters`</span>, indices, target, key)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-装饰器工厂"><a href="#2-装饰器工厂" class="headerlink" title="2. 装饰器工厂"></a>2. 装饰器工厂</h2><p><code>Typescript</code>官方装饰器提案定义了一个装饰器工厂，如下：</p>
+<blockquote>
+<p>装饰器工厂是一个可以接受任意数量参数的函数，并且必须返回装饰器类型之一。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@logClass</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  @logProperty</span><br><span class="line">  public name: string;</span><br><span class="line"></span><br><span class="line">  public surname: string;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(name : string, surname : string) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.surname = surname;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @logMethod</span><br><span class="line">  public saySomething(@logParameter something : string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">" "</span> + <span class="keyword">this</span>.surname + <span class="string">" says: "</span> + something;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码能够执行，但是如果我们有一个可以在任意地方使用的装饰器，而不用去担心其类型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@log</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  @log</span><br><span class="line">  public name: string;</span><br><span class="line"></span><br><span class="line">  public surname: string;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(name : string, surname : string) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.surname = surname;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @log</span><br><span class="line">  public saySomething(@log something : string) : string &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">" "</span> + <span class="keyword">this</span>.surname + <span class="string">" says: "</span> + something;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以通过使用装饰器工厂包装所有的装饰器来实现。装饰器工厂能够通过检查传递给装饰器的参数来确定是哪种类型的装饰器:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">...args: any[]</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (args.length) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">      <span class="keyword">return</span> logClass.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">      <span class="keyword">return</span> logProperty.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">typeof</span> args[<span class="number">2</span>] === <span class="string">'number'</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> logParameter.apply(<span class="keyword">this</span>, args)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> logMethod.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Decorators are not valid here!'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-可配置的装饰器"><a href="#3-可配置的装饰器" class="headerlink" title="3. 可配置的装饰器"></a>3. 可配置的装饰器</h2><p>在这篇文章中，我们将学习最后一件事情就是如何允许开发人员在使用装饰器时将参数传递给它。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@logClassWithArgs(&#123; <span class="attr">when</span> : &#123; <span class="attr">name</span> : <span class="string">"remo"</span>&#125; &#125;)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  public name: string;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以使用装饰器工厂创建可配置的装饰器。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logClassWithArgs</span>(<span class="params">filter: Object</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">target: <span class="built_in">Object</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// implement class decorator here, the class decorator</span></span><br><span class="line">    <span class="comment">// will have access to the decorator arguments (filter)</span></span><br><span class="line">    <span class="comment">// because they are  stored in a closure</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以使用相同的是方法应用在其他的装饰器类型上。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>我们现在深入理解了 4 种可用类型的装饰器，了解如何使用装饰器工厂，以及如何使用装饰器工厂来实现可配置装饰器。</p>
+<p>在下一篇文章中，我们将学习如何使用元数据反射 API。</p>
+<p>如果不想错过更多我们<code>Javascript</code>和<code>Typescript</code>的文章，请<a href="http://blog.wolksoftware.com/feed" target="_blank" rel="noopener">订阅</a>我们。</p>
+<p>请随时通过<a href="https://twitter.com/OweR_ReLoaDeD" target="_blank" rel="noopener">@OweR_ReLoaDeD</a>和<a href="https://twitter.com/WolkSoftwareLtd" target="_blank" rel="noopener">@WolkSoftwareLtd</a>与我们讨论这篇文章。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/08/04/译-Typescript中的装饰器与元数据反射-part4/" data-toggle="tooltip" data-placement="top" title="[译]Typescript中的装饰器与元数据反射(part4)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/08/02/译-Typescript中的装饰器与元数据反射-part2/" data-toggle="tooltip" data-placement="top" title="[译]Typescript中的装饰器与元数据反射(part2)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#decorator" title="decorator">decorator</a>
+                        
+                          <a class="tag" href="/tags/#Typescript" title="Typescript">Typescript</a>
+                        
+                          <a class="tag" href="/tags/#ts" title="ts">ts</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Allin 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

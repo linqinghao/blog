@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Allin的博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Allin的博客 | Allin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Allin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/header-img.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Allin</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">Thoughts, stories and ideas.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2018/08/04/译-Typescript中的装饰器与元数据反射-part4/">
+        <h2 class="post-title">
+            [译]Typescript中的装饰器与元数据反射(part4)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            这篇文章会深入讲解 Typescript 如何实现装饰器以及诸如反射或依赖注入这些令人激动的 javascript 特性。
+这个系列包含了一下几个部分：第一部分：方法装饰器第二部分：属性装饰器 &amp; 类装饰器第三部分：参数装饰器 &amp; 装饰器工厂第四部分：类型序列化 &amp; 元数据反射 API
+我假设你已经阅读了前面的文章并且已经准备好了。
+在此系列前面的文章中，我们学习了什......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-08-04
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/08/03/译-Typescript中的装饰器与元数据反射-part3/">
+        <h2 class="post-title">
+            [译]Typescript中的装饰器与元数据反射(part3)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            这个系列包含了一下几个部分：第一部分：方法装饰器第二部分：属性装饰器 &amp; 类装饰器第三部分：参数装饰器 &amp; 装饰器工厂第四部分：类型序列化 &amp; 元数据反射 API
+在这个系列前面的文章中，我们从学会了在Typescript如何实现那些装饰器。我们了解了类、方法、属性装饰器的是如何工作的。
+在这篇文章我们将学习:
+
+参数装饰器
+如何实现装饰器工厂
+如何实现可配置的装饰器......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-08-03
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/08/02/译-Typescript中的装饰器与元数据反射-part2/">
+        <h2 class="post-title">
+            [译]Typescript中的装饰器与元数据反射(part2)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            这篇文章会深入讲解 Typescript 如何实现装饰器以及诸如反射或依赖注入这些令人激动的 javascript 特性。
+这个系列包含了一下几个部分：第一部分：方法装饰器第二部分：属性装饰器 &amp; 类装饰器第三部分：参数装饰器 &amp; 装饰器工厂第四部分：类型序列化 &amp; 元数据反射 API
+在这个系列前面的文章中，我们从Typescript源码中找到了可用的装饰器特性的实......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-08-02
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/08/01/译-Typescript中的装饰器与元数据反射-part1/">
+        <h2 class="post-title">
+            [译]Typescript中的装饰器与元数据反射(part1)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            这篇文章会深入讲解 Typescript 如何实现装饰器以及诸如反射或依赖注入这些令人激动的 javascript 特性。
+这个系列包含了一下几个部分：第一部分：方法装饰器第二部分：属性装饰器 &amp; 类装饰器第三部分：参数装饰器 &amp; 装饰器工厂第四部分：类型序列化 &amp; 元数据反射 API
+几个月，Microsoft 和 Google 宣布在 Typescript 和 A......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-08-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/07/11/使用-ES7-中的-Decorator-来简化代码/">
+        <h2 class="post-title">
+            使用 ES7 中的 Decorator 来简化代码
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            之前偶然在浏览网上的代码中发现了很多类的开头有这么一个@符号，出于好奇心，查阅了一番网上的资料，发现这是 ES7 中的新特性，还处于不稳定的状态，但是它却能帮助我们写出很简洁的代码。所以，我就把我对它的理解写下来。
+在面向对象编程中，我们经常使用封装，继承，多态的特性。当我们需要为类新添一个打印日志的功能的时候，并且这个打印日志的功能可能很多地方都需要用到，我们就会抽象一个日志类，让其他类继......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-07-11
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/06/06/使用prettier随心所欲写代码/">
+        <h2 class="post-title">
+            使用prettier随心所欲写代码
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+问题
+常常在开发的时候，因为自己写的代码有时候不符合项目的代码规范，不符合的代码都会有标红的下划线，然后一直有强迫症需要去改正代码，这可能就会打断自己写代码的思路。看着满屏的红色代码，心情也会很糟糕。
+团队项目在协同开发的时候，每个人写的代码格式不一样，有时候会导致代码难以理解，阅读困难等。
+
+所以我就在思考有没有一个比较好的工具既能让自己随心所欲的写代码，不需要关心代码规范是怎么样的，提......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-06-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2018/05/05/理解ES6的Proxy/">
+        <h2 class="post-title">
+            理解ES6的Proxy
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Proxy 是 ES6 中的新特性之一。Proxy 用于修改某些操作的默认行为，比如属性 get\set，属性枚举，函数调用等。借助 Proxy，我们可以对 javascript 元级别进行编程，也即元编程。Proxy 可以理解成是对目标对象的一种拦截，或者代理，对目标对象的访问都必须通过这层拦截。所以可以在拦截这一层做过滤、改写等等操作。
+Proxy 基础使用ES6 原生提供 Proxy ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2018-05-05
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/11/24/React-Redux-Style-Guide/">
+        <h2 class="post-title">
+            React/Redux Style Guide
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            简要
+JSX 规范
+组件规范
+组件分类
+组件通信
+Redux 规范
+更新时间
+参考
+
+JSX 规范
+建议 对齐方式
+1234567891011// 规则：react/jsx-closing-bracket-location react/jsx-closing-tag-location// bad;&lt;Hello lastName="Smith" firstName="John" /&gt......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2017-11-24
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/08/24/用-ESLint-帮你写出更加优雅的代码/">
+        <h2 class="post-title">
+            用 ESLint 帮你写出更加优雅的代码
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            VScode 安装
+全局安装eslint babel-eslint
+1$ yarn global add eslint babel-eslint
+如果需要对react和vue进行代码检查，还需安装：
+1$ yarn global eslint-plugin-react eslint-plugin-vue
+ PS: yarn 全局安装可能会有问题，在系统找不到已安装包的bin命令，解决方案如下......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2017-08-24
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/11/30/Personal-Summary-in-2016/">
+        <h2 class="post-title">
+            Personal Summary in 2016
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            在 2016 年的最后几天，总会有许多感概想记录下来，写一写这一年做了什么，又有哪些未完成的遗憾啊。
+1这一年里，可能是最后在学校里学习的时候了吧。一二月还在忙着团队的项目，而且还过了一个很好的年，三四五月就开学了，一直处于在学习的状态，虽缓，但也前行。真正下定决心想往前端方向走的还是在这几个月里吧，因为自己的基础不是很好，很多东西都是要恶补的，对于前端也只是一个入门的初学者。所以在那时候一......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by linchinghao on
+        2016-11-30
+    </p>
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+        <li class="next">
+            <a href="/page/2/">Older Posts &rarr;</a>
+        </li>
+    
+</ul>
+
+
+
+                <!-- 如果开启评论功能 -->
+                
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#js" title="js" rel="5">js</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#decorator" title="decorator" rel="5">decorator</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Typescript" title="Typescript" rel="4">Typescript</a>
+                            
+                        
+                            
+                            <a href="/tags/#ts" title="ts" rel="4">ts</a>
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/img/avatar.jpg">
+                        
+
+                        
+                            <p>前端开发/设计师</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+                                <li>
+                                    <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="https://github.com/linchinghao">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Allin 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

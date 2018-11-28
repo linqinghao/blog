@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Allin的博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          记一次前端面试 - Allin的博客 | Allin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2016/10/30/记一次前端面试/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Allin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#frontend" title="frontend">frontend</a>
+                        
+                    </div>
+                    <h1>记一次前端面试</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by linchinghao on
+                        2016-10-30
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>昨天去面试了前端工程师实习生的职位，这一过程也发现了自己的很多问题，基础方面还是不够牢固，一味的体验新技术，有点舍本逐末的感觉。面试了将近两个小时，虽然有点累，但是收获得更多。</p>
+<p>首先是自我介绍这些，这部分就略过。以下问题不分先后，根据回忆来。</p>
+<h3 id="1-讲讲前端开发工程师的职责与理解"><a href="#1-讲讲前端开发工程师的职责与理解" class="headerlink" title="1. 讲讲前端开发工程师的职责与理解"></a>1. 讲讲前端开发工程师的职责与理解</h3><p>前端的职责在于还原设计稿，并且实现界面的交互，不断的提升用户体验。</p>
+<ol>
+<li>参与项目，快速高质量完成实现效果图，精确到 1px；</li>
+<li>与团队成员，UI 设计，产品经理的沟通；</li>
+<li>做好的页面结构，页面重构和用户体验；</li>
+<li>处理 hack，兼容、写出优美的代码格式；</li>
+<li>针对服务器的优化、拥抱最新前端技术。</li>
+</ol>
+<h3 id="2-CSS3-动画"><a href="#2-CSS3-动画" class="headerlink" title="2. CSS3 动画"></a>2. CSS3 动画</h3><p>CSS3 可以自定义动画代替传统的脚本实现动画。CSS3 中使用<code>@keyframes</code>来定义动画。<br>用法如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">keyframes</span> animationname&#123;</span><br><span class="line">	keyframes-selector &#123; css-styles;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 CSS3 动画，还需要用到<code>animation</code>属性：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">animation</span>: <span class="selector-tag">name</span> <span class="selector-tag">duration</span> <span class="selector-tag">timing-function</span> <span class="selector-tag">delay</span> <span class="selector-tag">iteration-count</span> <span class="selector-tag">direction</span>;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>animation-name</td>
+<td>规定需要绑定到选择器的 keyframe 名称</td>
+</tr>
+<tr>
+<td>animation-duration</td>
+<td>规定完成动画所花费的时间，以秒或毫秒计</td>
+</tr>
+<tr>
+<td>animation-timing-function</td>
+<td>规定动画的速度曲线</td>
+</tr>
+<tr>
+<td>animation-delay</td>
+<td>规定在动画开始之前的延迟</td>
+</tr>
+<tr>
+<td>animation-iteration-count</td>
+<td>规定动画应该播放的次数</td>
+</tr>
+<tr>
+<td>animation-direction</td>
+<td>规定是否应该轮流反向播放动画</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-原型链的理解"><a href="#3-原型链的理解" class="headerlink" title="3. 原型链的理解"></a>3. 原型链的理解</h3><p>Javascript 使用原型链来解析属性值。原型链描述了 javascript 引擎如何从对象查找到原型以及原型的原型，来定位对象的属性值。当请求对象的属性时，javascript 引擎首先直接在该对象查找。如果找不到该属性，则查找原型（保存在对象的<code>__proto__</code>属性中），查看原型是否包含了请求的属性。</p>
+<p>如果 javascript 引擎在对象的原型上找不到该属性，它就查找原型的原型（原型也是一个对象，所以它也有原型）。依此类推，当 javascript 到达 Object 的原型（null）时，原型链也就结束了。如果 javascript 在原型链的所有地方都找不到请求的属性，则返回 undefined。</p>
+<p>一张很经典的图，需反复理解：<br><img src="http://ob8200rxm.bkt.clouddn.com/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/Efyemq7.jpg%21web.jpeg" alt="原型链"></p>
+<h3 id="4-OSI-网络模型"><a href="#4-OSI-网络模型" class="headerlink" title="4. OSI 网络模型"></a>4. OSI 网络模型</h3><p><img src="http://ob8200rxm.bkt.clouddn.com/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/YR7niu3.png%21web.png" alt="osi"><br>开放系统互连参考模型 (Open System Interconnect 简称 OSI）是国际标准化组织(ISO)和国际电报电话咨询委员会(CCITT)联合制定的开放系统互连参考模型，为开放式互连信息系统提供了一种功能结构的框架。</p>
+<p>它从低到高分别是：物理层、数据链路层、网络层、传输层、会话层、表示层和应用层。</p>
+<ol>
+<li>物理层：利用传输介质为数据链路层提供物理连接，实现比特流的传输</li>
+<li>数据链路层：通过各种控制协议，将有差错的物理信道变为无差错的、能可靠传输数据帧的数据链路。将二进制数据转换成标准帧格式（起始位、数据、地址、校验、结束位）。</li>
+<li>网络层：选择数据传输的最优路径，解决网络阻塞问题（网络阻塞的原因主要是 CPU 需要处理数据有一定延迟），将大的数据切割成小的数据包，根据不同时间段的不同最优路径进行传输（可以联想看片时候的断点续传）</li>
+<li>传输层：定义了一些传输数据的协议和端口号，TCP（传输控制协议）和 UDP（用户数据报协议）。</li>
+<li>会话层：向两个实体的表示层提供建立和使用连接的方法。数据的传输是在会话层完成的，而不是传输层，传输层只是定义了数据传输的协议</li>
+<li>表示层：数据格式转换</li>
+<li>应用层：直接向用户提供服务，完成用户希望在网络上完成的各种工作</li>
+</ol>
+<h3 id="5-HTTP-请求"><a href="#5-HTTP-请求" class="headerlink" title="5.HTTP 请求"></a>5.HTTP 请求</h3><p>HTTP (Hypertext Transfer Protocol) 是一个为分布式、协同、超媒体信息系统制定的应用层协议 。通常，HTTP 消息包括客户端向服务器的请求消息和服务器向客户端的响应消息。这两种类型的消息由一个起始行、一个或多个头域、一个头域结束的空行和可选的消息体组成。其中，HTTP 的头域包括 通用头 、 请求头 、 响应头 和 实体头 这四个部分。每个头域由一个头域的域名，冒号和域值组成。</p>
+<p>一个简单的 http 请求头：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: www.xxx.com</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line">Referer: https://www.baidu.com/link?url=RhiUC8ctmOtA7LLqJ6SrkHdOkWD_l2xnFR4uJkrxcAi&amp;wd=&amp;eqid=fe2aa5df000998f30000000557b96de6</span><br><span class="line">Accept-Encoding: gzip, deflate, sdch</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8</span><br><span class="line">Cookie: _ntes_nnid=...</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host</td>
+<td>指定请求的服务器的域名和端口号</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>表示是否需要持久连接。（HTTP 1.1 默认进行持久连接）</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>指定请求和响应遵循的缓存机制</td>
+</tr>
+<tr>
+<td>Upgrade-Insecure-Requests</td>
+<td>让浏览器自动升级请求 （由 http 升级成 https）</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>包含发出请求的用户信息</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>指定客户端能够接收的内容类型</td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>先前网页的地址，当前请求网页紧随其后,即来路</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>指定浏览器可以支持的 web 服务器返回内容压缩编码类型</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>浏览器可接受的语言</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>HTTP 请求发送时，会把保存在该请求域名下的所有 cookie 值一起发送给 web 服务器</td>
+</tr>
+</tbody>
+</table>
+<p>请求正文中包含用户提交的信息,比如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=gaopeng&amp;age=<span class="number">25</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-跨域解决方案"><a href="#6-跨域解决方案" class="headerlink" title="6. 跨域解决方案"></a>6. 跨域解决方案</h3><ol>
+<li><p>JSONP</p>
+<p>原理是：动态插入 script 标签，通过 script 标签引入一个 js 文件，这个 js 文件载入成功后会执行我们在 url 参数中指定的函数，并且会把我们需要的 json 数据作为参数传入。</p>
+<p>由于同源策略的限制，XmlHttpRequest 只允许请求当前源（域名、协议、端口）的资源，为了实现跨域请求，可以通过 script 标签实现跨域请求，然后在服务端输出 JSON 数据并执行回调函数，从而解决了跨域的数据请求。</p>
+<p>优点是兼容性好，简单易用，支持浏览器与服务器双向通信。缺点是只支持 GET 请求。</p>
+</li>
+<li><p>CORS</p>
+<p>服务器端对于 CORS 的支持，主要就是通过设置 Access-Control-Allow-Origin 来进行的。如果浏览器检测到相应的设置，就可以允许 Ajax 进行跨域的访问。</p>
+</li>
+<li><p>使用 window.name 来进行跨域</p>
+<p>window 对象有个 name 属性，该属性有个特征：即在一个窗口(window)的生命周期内,窗口载入的所有的页面都是共享一个 window.name 的，每个页面对 window.name 都有读写的权限，window.name 是持久存在一个窗口载入过的所有页面中的</p>
+</li>
+<li><p>使用 HTML5 中新引进的 window.postMessage 方法来跨域传送数据</p>
+</li>
+</ol>
+<h3 id="7-JPEG、PNG、GIF-那些事"><a href="#7-JPEG、PNG、GIF-那些事" class="headerlink" title="7.JPEG、PNG、GIF 那些事"></a>7.JPEG、PNG、GIF 那些事</h3><ol>
+<li>JPEG 格式是一种大小与质量相平衡的压缩图片格式。通俗一点讲，就是：高的压缩比=低的图片质量=小的文件大小。反之，低的压缩比=高的图片质量=大的文件大小。由于 JPEG 文件无法保持 100 ％的原始图像的像素数据，所以它不被认为是一种无损图像格式。</li>
+<li><p>PNG，初始时被作为 GIF 的免费替代格式所开发，采用公共专利压缩算法。PNG 格式也是一种无损压缩，但与 GIF 格式不同的是，PNG 同时支持 8 位和 24 位的图像。</p>
+<p>PNG-8：支持透明背景且像素颜色不能超过 256 种，除了压缩算法不同，与 gif 格式的特性差不多。</p>
+<p>PNG-24：支持 160 万种不同的像素颜色且支持 Alpha 透明效果，这就意味着，无论透明度设置为多少，PNG 图片均能够与背景很好的融合在一起。</p>
+</li>
+<li><p>GIF 格式，是为使图片能够应用在在线（online）应用程序上所特别开发的图片格式，支持隔断显示，因此网页加载速度会比较快。</p>
+</li>
+</ol>
+<p>前端图片的选择：</p>
+<ol>
+<li>jpg 格式，多用于一些色彩丰富的图片，比如相片，广告中的图片等。</li>
+<li>gif 格式，用在一些色彩不是很丰富的小图标上。如果不是透明图标的话，完全可以采用 png-8 替代</li>
+<li>png-8 格式，一些色彩不是很丰富的图片，背景都行，png-8 在无损压缩的同时，能最大化压缩。 推荐使用 。</li>
+<li>png-24 格式，细节要求较高的透明图片，logo 图标。</li>
+</ol>
+<h3 id="8-前端性能优化"><a href="#8-前端性能优化" class="headerlink" title="8. 前端性能优化"></a>8. 前端性能优化</h3><ol>
+<li><p>代码层面：避免使用 css 表达式，避免使用高级选择器，通配选择器。</p>
+</li>
+<li><p>缓存利用：缓存 Ajax，使用 CDN，使用外部 js 和 css 文件以便缓存，添加 Expires 头，服务端配置 Etag，减少 DNS 查找等</p>
+</li>
+<li><p>请求数量：合并样式和脚本，使用 css 图片精灵，初始首屏之外的图片资源按需加载，静态资源延迟加载。</p>
+</li>
+<li><p>请求带宽：压缩文件，开启 GZIP</p>
+</li>
+</ol>
+<p>代码优化：</p>
+<ul>
+<li>用 hash-table 来优化查找</li>
+<li>少用全局变量</li>
+<li>用 innerHTML 代替 DOM 操作，减少 DOM 操作次数，优化 javascript 性能</li>
+<li>用 setTimeout 来避免页面失去响应</li>
+<li>缓存 DOM 节点查找的结果</li>
+<li>避免使用 CSS 表达式</li>
+<li>避免全局查询</li>
+<li>避免使用 with(with 会创建自己的作用域，会增加作用域链长度)</li>
+<li>多个变量声明合并</li>
+<li>避免图片和 iFrame 等的空 Src。空 Src 会重新加载当前页面，影响速度和效率</li>
+<li>尽量避免写在 HTML 标签中写 Style 属性</li>
+</ul>
+<p>移动端性能优化：</p>
+<ul>
+<li>尽量使用 css3 动画，开启硬件加速。</li>
+<li>适当使用 touch 事件代替 click 事件。</li>
+<li>避免使用 css3 渐变阴影效果。</li>
+<li>可以用 transform: translateZ(0)来开启硬件加速。</li>
+<li>不滥用 Float。Float 在渲染时计算量比较大，尽量减少使用</li>
+<li>不滥用 Web 字体。Web 字体需要下载，解析，重绘当前页面，尽量减少使用。</li>
+<li>合理使用 requestAnimationFrame 动画代替 setTimeout</li>
+<li>CSS 中的属性（CSS3 transitions、CSS3 3D transforms、Opacity、Canvas、WebGL、Video）会触发 GPU 渲染，请合理使用。过渡使用会引发手机过耗电增加</li>
+</ul>
+<h3 id="9-用原生-js-写一段-Ajax"><a href="#9-用原生-js-写一段-Ajax" class="headerlink" title="9. 用原生 js 写一段 Ajax"></a>9. 用原生 js 写一段 Ajax</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> request = <span class="keyword">new</span> XMLHttpRequest() <span class="comment">//实例化对象</span></span><br><span class="line"></span><br><span class="line">request.open(<span class="string">'GET'</span>, <span class="string">'get.php'</span>, <span class="literal">true</span>) <span class="comment">//建立请求</span></span><br><span class="line"></span><br><span class="line">request.send() <span class="comment">// 发送请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//监听服务器响应</span></span><br><span class="line"></span><br><span class="line">request.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((request.readyState === <span class="number">4</span>) &amp; (request.status === <span class="number">200</span>)) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    request.responseText</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当初自己写的 ajax 就是这样子，后来才觉得还有很多没有考虑到的地方，如果请求错误的逻辑也没有写到，兼容性也没有考虑到，因此，需要更加优化下自己写的代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> requset = <span class="literal">null</span></span><br><span class="line"><span class="comment">// 解决XMLHttpRequest对象的兼容性</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">  request = <span class="keyword">new</span> XMLHttpRequest() <span class="comment">//实例化对象</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">window</span>.ActiveXObject) &#123;</span><br><span class="line">  request = <span class="keyword">new</span> ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//监听服务器响应</span></span><br><span class="line">request.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((request.readyState === <span class="number">4</span>) &amp; (request.status === <span class="number">200</span>)) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">    request.responseText</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(request.status)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">request.open(<span class="string">'GET'</span>, <span class="string">'get.php'</span>, <span class="literal">true</span>) <span class="comment">//建立请求</span></span><br><span class="line">request.send() <span class="comment">// 发送请求</span></span><br></pre></td></tr></table></figure>
+<p>readyState 表示 HTTP 请求的运行状态，不论请求的数据是否找到，都会经历以下的过程：</p>
+<ul>
+<li>0 —- 请求初始化，简历 xhr 对象。</li>
+<li>1 —- 与服务器建立连接,open()方法已经成功调用。</li>
+<li>2 —- 请求已经接收</li>
+<li>3 —- 请求正在处理</li>
+<li>4 —- 请求处理完成</li>
+</ul>
+<h3 id="10-利用-canvas-画一个半径为-5-的红色圆弧"><a href="#10-利用-canvas-画一个半径为-5-的红色圆弧" class="headerlink" title="10. 利用 canvas 画一个半径为 5 的红色圆弧"></a>10. 利用 canvas 画一个半径为 5 的红色圆弧</h3><p>之前在学习 canvas 的过程中，写了几篇关于 canvas 的文章，但是在面试的时候却有点想不起来，好尴尬。</p>
+<p><a href="https://segmentfault.com/a/1190000005953758" target="_blank" rel="noopener">canvas 入门－利用 canvas 制作一个七巧板</a></p>
+<p><a href="https://segmentfault.com/a/1190000005982536" target="_blank" rel="noopener">Canvas 入门－利用 Canvas 画国旗</a></p>
+<p><a href="https://segmentfault.com/a/1190000006021149" target="_blank" rel="noopener">Canvas 入门－利用 Canvas 绘制好玩的电子时钟</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> canvas = <span class="built_in">document</span>.getElementById(<span class="string">'canvas'</span>)</span><br><span class="line"><span class="keyword">var</span> ctx = canvas.getContext(<span class="string">'2d'</span>)</span><br><span class="line">canvas.width = <span class="number">600</span></span><br><span class="line">canvas.height = <span class="number">600</span></span><br><span class="line">ctx.beginPath()</span><br><span class="line"><span class="keyword">var</span> x = <span class="number">200</span>, <span class="comment">// x 坐标值</span></span><br><span class="line">  y = <span class="number">200</span>, <span class="comment">// y 坐标值</span></span><br><span class="line">  radius = <span class="number">5</span>, <span class="comment">//半径</span></span><br><span class="line">  startAngle = <span class="number">0</span> <span class="comment">//开始点</span></span><br><span class="line">endAngle = <span class="built_in">Math</span>.PI * <span class="number">2</span> <span class="comment">//结束点</span></span><br><span class="line">anticlockwise = <span class="literal">true</span> <span class="comment">//逆时针</span></span><br><span class="line">ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)</span><br><span class="line">ctx.lineWidth = <span class="number">10</span></span><br><span class="line">ctx.fillStyle = <span class="string">'#ffffff'</span></span><br><span class="line">ctx.strokeStyle = <span class="string">'#ff0000'</span></span><br><span class="line">ctx.stroke()</span><br><span class="line">ctx.fill()</span><br></pre></td></tr></table></figure>
+<h3 id="11-递归、setTimeout"><a href="#11-递归、setTimeout" class="headerlink" title="11. 递归、setTimeout"></a>11. 递归、setTimeout</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 递归实现每5s调用自身一次，总共调用100次</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> i = <span class="number">0</span> <span class="comment">// 计数器</span></span><br><span class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (i++ &gt; <span class="number">99</span>) <span class="keyword">return</span></span><br><span class="line">  setTimeout(argusments.callee, <span class="number">5000</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<h3 id="12-最后"><a href="#12-最后" class="headerlink" title="12. 最后"></a>12. 最后</h3><p>还有关于 ES6、vuejs、webpack 这些，当时对这些不是深层次的了解，所以答的也不好。通过这次面试，自己发现了自己比较欠缺的地方，基础还不是很扎实，有点急于求成，应该把 js 学的更加巩固些，万变不离其宗，不断的写代码，踩过坑，才会有更多的经验总结。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/11/30/Personal-Summary-in-2016/" data-toggle="tooltip" data-placement="top" title="Personal Summary in 2016">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/10/30/谈-Javascript-模块化/" data-toggle="tooltip" data-placement="top" title="谈 Javascript 模块化">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#frontend" title="frontend">frontend</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Allin 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

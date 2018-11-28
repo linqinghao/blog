@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Allin的博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          [译]Typescript中的装饰器与元数据反射(part4) - Allin的博客 | Allin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2018/08/04/译-Typescript中的装饰器与元数据反射-part4/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Allin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#decorator" title="decorator">decorator</a>
+                        
+                          <a class="tag" href="/tags/#Typescript" title="Typescript">Typescript</a>
+                        
+                          <a class="tag" href="/tags/#ts" title="ts">ts</a>
+                        
+                    </div>
+                    <h1>[译]Typescript中的装饰器与元数据反射(part4)</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by linchinghao on
+                        2018-08-04
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>这篇文章会深入讲解 Typescript 如何实现装饰器以及诸如反射或依赖注入这些令人激动的 javascript 特性。</p>
+<p>这个系列包含了一下几个部分：<br><a href="http://blog.wolksoftware.com/decorators-reflection-javascript-typescript" target="_blank" rel="noopener">第一部分：方法装饰器</a><br><a href="http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-ii" target="_blank" rel="noopener">第二部分：属性装饰器 &amp; 类装饰器</a><br><a href="http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-3" target="_blank" rel="noopener">第三部分：参数装饰器 &amp; 装饰器工厂</a><br><a href="http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-4" target="_blank" rel="noopener">第四部分：类型序列化 &amp; 元数据反射 API</a></p>
+<p>我假设你已经阅读了前面的文章并且已经准备好了。</p>
+<p>在此系列前面的文章中，我们学习了什么是装饰器并且知道如何在<code>Typescript</code>中实现它。我们了解了类、方法、属性和参数装饰器如何工作，如何创建装饰器工厂，以及如何使用装饰器工厂实现可配置的装饰器。</p>
+<p>在这篇文章中我们将学习:</p>
+<ul>
+<li>为什么在 Javascript 中我们需要反射？</li>
+<li>元数据反射 API</li>
+<li>基本类型序列化</li>
+<li>复杂类型序列化</li>
+</ul>
+<h2 id="1-为什么在-Javascript-中我们需要反射？"><a href="#1-为什么在-Javascript-中我们需要反射？" class="headerlink" title="1. 为什么在 Javascript 中我们需要反射？"></a>1. 为什么在 Javascript 中我们需要反射？</h2><p>反射这个名词是用于描述能够检查同一系统(或自身)中的其他代码的代码。</p>
+<p>反射对于许多用例（复合/依赖注入、运行时类型断言、测试）是有用的。</p>
+<p>我们的<code>JavaScript</code>应用程序越来越大，我们开始需要一些工具（比如控制容器的反转）和诸如（运行时类型断言）之类的特性来管理这种日益增长的复杂性。</p>
+<p>问题是，由于<code>JavaScript</code>没有反射，所以一些工具和特性无法实现，或者至少它们不能像<code>C#</code>或者<code>Java</code>这样的编程语言那样强大。</p>
+<p>一个强大的反射 API 应该允许我们在运行时检查一个未知的对象，并找出它的所有内容。</p>
+<p>我们应该能找到这样的东西：</p>
+<ul>
+<li><p>实体的名称。</p>
+</li>
+<li><p>实体的类型。</p>
+</li>
+<li><p>哪些接口是由实体实现的。</p>
+</li>
+<li><p>实体的属性的名称和类型。</p>
+</li>
+<li><p>实体的构造器参数的名称和类型。</p>
+</li>
+</ul>
+<p>在<code>Javascript</code>中我们可以使用像<code>Object.getOwnPropertyDescriptor()</code>或者<code>Object.keys()</code>这样的方法取得实体的信息，但是我们需要反射实现更加强大的开发工具。</p>
+<p>不过，由于<code>Typescript</code>开始支持一些反射特性，事情正在发生改变。让我们看下这些特性吧。</p>
+<h2 id="2-元数据反射-API"><a href="#2-元数据反射-API" class="headerlink" title="2. 元数据反射 API"></a>2. 元数据反射 API</h2><p>原生的<code>Javascrtpt</code>支持元数据反射 API 还处在开发的早期阶段中。<a href="https://github.com/jonathandturner/decorators/blob/master/specs/metadata.md" target="_blank" rel="noopener">有人提议将<code>Decorator</code>特性添加到<code>ES7</code>中，并提供一个用于<code>Decorator</code>元数据的<code>ES7</code>反射 API 的原型对象</a>，该对象能够访问。</p>
+<p><code>Typescript</code>团队中的某些人一直在为<code>ES7</code>反射 API 的原型开发一个<a href="https://www.npmjs.com/package/reflect-metadata" target="_blank" rel="noopener"><code>Polyfill</code></a>，而<a href="https://github.com/Microsoft/TypeScript/issues/2577" target="_blank" rel="noopener"><code>Typescript</code>编译器现在能够编译一些序列化的设计时类型元数据</a>。</p>
+<p>我们可以通过使用<code>reflect-metadata</code>包来使用元数据反射 API 的 Polyfill。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install reflect-metadata;</span><br></pre></td></tr></table></figure>
+<p>我们必须将它与<code>Typescript 1.5</code>，并且将编译器中的<code>emitDecoratorMetadata</code>标志设为<code>true</code>才能使用。同时，我们也需要包含<code>reflect-metadata.d.ts</code>的引用，以及加载<code>Reflect.js</code>文件。</p>
+<p>然后，我们需要实现我们自己的装饰器，并使用其中一个可用的<code>reflect</code>元数据设计的键。目前只有三中选择：</p>
+<ul>
+<li>类型元数据使用的键<code>&quot;design:type&quot;</code></li>
+<li>参数类型元数据使用的键<code>&quot;design:paramtypes&quot;</code></li>
+<li>返回类型元数据使用的键<code>&quot;design:returntype&quot;</code></li>
+</ul>
+<p>让我们看一组例子。</p>
+<h3 id="A-使用reflect元数据-API-获得类型元数据"><a href="#A-使用reflect元数据-API-获得类型元数据" class="headerlink" title="A) 使用reflect元数据 API 获得类型元数据"></a>A) 使用<code>reflect</code>元数据 API 获得类型元数据</h3><p>先定义下面的属性装饰器：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logType</span>(<span class="params">target: any, key: string</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> t = <span class="built_in">Reflect</span>.getMetadata(<span class="string">'design:type'</span>, target, key)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;key&#125;</span> type: <span class="subst">$&#123;t.name&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，我们可以将其应用于类的一个属性，以获得其类型:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line">      @logType <span class="comment">// apply property decorator</span></span><br><span class="line">      public attr1 : string;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子将在控制台打印:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">attr1 type: <span class="built_in">String</span></span><br></pre></td></tr></table></figure>
+<h3 id="B-使用reflect元数据-API-获得参数类型元数据"><a href="#B-使用reflect元数据-API-获得参数类型元数据" class="headerlink" title="B) 使用reflect元数据 API 获得参数类型元数据"></a>B) 使用<code>reflect</code>元数据 API 获得参数类型元数据</h3><p>先定义一下的参数装饰器：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">logParamTypes</span>(<span class="params">target: any, key: string</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> types = <span class="built_in">Reflect</span>.getMetadata(<span class="string">'design:paramtypes'</span>, target, key)</span><br><span class="line">  <span class="keyword">var</span> s = types.map(<span class="function"><span class="params">a</span> =&gt;</span> a.name).join()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;key&#125;</span> param types: <span class="subst">$&#123;s&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，我们可以将它应用到类的一个方法中，以获取关于其参数类型的信息:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;&#125;</span><br><span class="line">interface IFoo &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line">  @logParameters <span class="comment">// apply parameter decorator</span></span><br><span class="line">  doSomething(</span><br><span class="line">    param1: string,</span><br><span class="line">    param2: number,</span><br><span class="line">    param3: Foo,</span><br><span class="line">    param4: &#123; <span class="attr">test</span>: string &#125;,</span><br><span class="line">    param5: IFoo,</span><br><span class="line">    param6: <span class="built_in">Function</span>,</span><br><span class="line">    param7: <span class="function">(<span class="params">a: number</span>) =&gt;</span> <span class="keyword">void</span></span><br><span class="line">  ): number &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的例子将在控制台打印:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doSomething param types: <span class="built_in">String</span>, <span class="built_in">Number</span>, Foo, <span class="built_in">Object</span>, <span class="built_in">Object</span>, <span class="built_in">Function</span>, <span class="built_in">Function</span></span><br></pre></td></tr></table></figure>
+<h3 id="C-使用reflect元数据-API-获得返回值类型元数据"><a href="#C-使用reflect元数据-API-获得返回值类型元数据" class="headerlink" title="C) 使用reflect元数据 API 获得返回值类型元数据"></a>C) 使用<code>reflect</code>元数据 API 获得返回值类型元数据</h3><p>我们还可以使用<code>“design:returntype”</code>元数据键获得关于方法返回类型的信息:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Reflect</span>.getMetadata(<span class="string">'design:returntype'</span>, target, key)</span><br></pre></td></tr></table></figure>
+<p>##3. 基本类型的序列化</p>
+<p>我们看下上面<code>&quot;design:paramtypes&quot;</code>的例子。这里需要注意，接口<code>IFoo</code>和对象字面量<code>{ test: string }</code>被序列化为<code>Object</code>。这是因为<code>Typescript</code>只支持基本类型的序列化。基本类型序列化规则是：</p>
+<ul>
+<li><code>number</code>序列化为<code>Number</code></li>
+<li><code>string</code>序列化为<code>String</code></li>
+<li><code>boolean</code>序列化为<code>Boolean</code></li>
+<li><code>any</code>序列化为<code>Object</code></li>
+<li><code>void</code>序列化为<code>undefined</code></li>
+<li><code>Array</code>序列化为<code>Array</code></li>
+<li>如果是<code>Tuple</code>，序列化为<code>Array</code></li>
+<li>如果是<code>class</code>，序列化为类的构造函数</li>
+<li>如果是<code>Enum</code>，序列化为<code>Number</code></li>
+<li>如果至少有一个调用签名，则序列化为<code>Function</code></li>
+<li>其他则序列化为<code>Object</code>(包括接口)</li>
+</ul>
+<p>接口和对象字面量可能在未来序列化为更复杂的类型但是现在是行不通的。</p>
+<h2 id="4-复杂类型的序列化"><a href="#4-复杂类型的序列化" class="headerlink" title="4. 复杂类型的序列化"></a>4. 复杂类型的序列化</h2><p><code>Typescript</code>团队正在提议，允许我们为复杂类型生成元数据。</p>
+<p>该提议描述了一些复杂类型如何被序列化。上面基本类型的序列化规则保持一致，但是复杂类型的序列化将会采用不同的序列化规则。在这个提议中，基本类型被用来描述所有可能的类型：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Basic shape for a type.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">interface _Type &#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Describes the specific shape of the type.</span></span><br><span class="line"><span class="comment">   * @remarks</span></span><br><span class="line"><span class="comment">   * One of: "typeparameter", "typereference", "interface", "tuple", "union",</span></span><br><span class="line"><span class="comment">   * or "function".</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  kind: string;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们还可以找到用于描述每种可能类型的类。比如，我们可以找到类被用来序列化继承的接口<code>interface foo&lt;bar&gt; { /* ... */}</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Describes a generic interface.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">interface InterfaceType extends _Type &#123;</span><br><span class="line">  kind: string; <span class="comment">// "interface"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Generic type parameters for the type. May be undefined.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  typeParameters?: TypeParameter[];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Implemented interfaces.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  implements?: Type[];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Members for the type. May be undefined.</span></span><br><span class="line"><span class="comment">   * @remarks Contains property, accessor, and method declarations.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  members?: &#123; [key: string | symbol | number]: Type &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Call signatures for the type. May be undefined.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  call?: Signature[];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Construct signatures for the type. May be undefined.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  construct?: Signature[];</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Index signatures for the type. May be undefined.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  index?: Signature[];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>正如我们上面所看到的，将会有一个属性来标示实现的接口。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Implemented interfaces.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">implements?: Type[];</span><br></pre></td></tr></table></figure>
+<p>如果一个实体在运行时实现了某个接口，可以使用这些信息进行验证，这对 IoC 容器非常有用。</p>
+<p>我们不知道复杂类型的序列化什么时候会被添加到<code>Typescript</code>中，但是我们不能等下去，因为我们计划使用它为我们出色的 IoC 容器添加一些很酷的特性:<br><a href="http://blog.wolksoftware.com/introducing-inversifyjs" target="_blank" rel="noopener">InversifyJS</a></p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>我们现在深入理解了 4 种可用类型的装饰器，了解如何使用装饰器工厂，以及如何使用装饰器工厂来实现可配置装饰器。</p>
+<p>并且，我们了解了元数据反射 API 是如何工作的。</p>
+<p>我们将继续更新这个博客，并在未来撰写更多关于元数据反射 API 的文章。如果你不想错过的话，别忘了订阅!</p>
+<p>请随时通过<a href="https://twitter.com/OweR_ReLoaDeD" target="_blank" rel="noopener">@OweR_ReLoaDeD</a>和<a href="https://twitter.com/WolkSoftwareLtd" target="_blank" rel="noopener">@WolkSoftwareLtd</a>与我们讨论这篇文章。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/08/03/译-Typescript中的装饰器与元数据反射-part3/" data-toggle="tooltip" data-placement="top" title="[译]Typescript中的装饰器与元数据反射(part3)">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#decorator" title="decorator">decorator</a>
+                        
+                          <a class="tag" href="/tags/#Typescript" title="Typescript">Typescript</a>
+                        
+                          <a class="tag" href="/tags/#ts" title="ts">ts</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Allin 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

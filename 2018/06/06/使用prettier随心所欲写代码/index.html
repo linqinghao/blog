@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Allin的博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          使用prettier随心所欲写代码 - Allin的博客 | Allin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2018/06/06/使用prettier随心所欲写代码/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Allin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#prettier" title="prettier">prettier</a>
+                        
+                          <a class="tag" href="/tags/#code" title="code">code</a>
+                        
+                    </div>
+                    <h1>使用prettier随心所欲写代码</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by linchinghao on
+                        2018-06-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1frxfv1a2tyj30hu0890tm.jpg" alt="prettier"></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol start="2">
+<li>常常在开发的时候，因为自己写的代码有时候不符合项目的代码规范，不符合的代码都会有标红的下划线，然后一直有强迫症需要去改正代码，这可能就会打断自己写代码的思路。看着满屏的红色代码，心情也会很糟糕。</li>
+<li>团队项目在协同开发的时候，每个人写的代码格式不一样，有时候会导致代码难以理解，阅读困难等。</li>
+</ol>
+<p>所以我就在思考有没有一个比较好的工具既能让自己随心所欲的写代码，不需要关心代码规范是怎么样的，提交到远程仓库时候会自动格式化代码。后来就发现了一个非常好的工具可以帮助我们做这些事情。也就是我们今天介绍的<code>prettier</code></p>
+<h2 id="prettier"><a href="#prettier" class="headerlink" title="prettier"></a>prettier</h2><p>官网介绍<code>prettier</code>是一个可配置的代码格式化工具，支持多种语言，包括<code>javascript</code>，<code>jsx</code>，<code>typescript</code>，<code>json</code>等等。它能够保证输出的代码是一致的。官方例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne())</span><br></pre></td></tr></table></figure>
+<p>上面代码由于太长，阅读起来十分困难。<code>prettier</code>就能帮我们美化下这份代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne())</span><br></pre></td></tr></table></figure>
+<p>这样子代码阅读起来就非常流畅了。</p>
+<h2 id="prettier-能帮助我们做什么"><a href="#prettier-能帮助我们做什么" class="headerlink" title="prettier 能帮助我们做什么"></a>prettier 能帮助我们做什么</h2><ol>
+<li>它能帮助我们停止无用并且浪费时间的代码风格争论，譬如，缩进的宽度等等。</li>
+<li>手动格式化代码是件非常辛苦的活，<code>prettier</code>就能够帮助我们输出一致的代码，是不是觉得很 cool ～</li>
+<li>设置 githook 可以减少 PR 中由于 ESLint 规则导致构建失败的样式问题</li>
+<li>不需要关心繁琐的代码规范，专注开发工作</li>
+</ol>
+<h2 id="使用-prettier"><a href="#使用-prettier" class="headerlink" title="使用 prettier"></a>使用 prettier</h2><h3 id="个人日常开发"><a href="#个人日常开发" class="headerlink" title="个人日常开发"></a>个人日常开发</h3><p>以自己日常开发举个例子，我只需要简单配置一下自己想要输出的代码格式，就能随心所欲写代码，格式化的工作交给<code>prettier</code>去做，只要保存一下文件，它就能自动地帮我们纠正自己的代码风格。</p>
+<p>以常用的开发工具 vscode 举个例子，先要在应用商店安装<code>prettier</code>扩展<br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1frxexj17d8j30y40lcagm.jpg" alt="vscode-prettier"></p>
+<p>安装完成后，你就可以格式化文件了，但是<code>prettier</code>使用的是默认的代码风格，我们可以更改为自己喜欢的代码风格。</p>
+<p>我们可以通过在自己项目创建配置文件(<code>.prettierrc</code>)的方式，但是在自己的个人项目会显得冗余，所以可以简单的在 vscode 的用户配置里加上下面这些:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;editor.formatOnSave&quot;: true,</span><br><span class="line">&quot;prettier.printWidth&quot;: 100,</span><br><span class="line">&quot;prettier.semi&quot;: false,</span><br><span class="line">&quot;prettier.singleQuote&quot;: true</span><br></pre></td></tr></table></figure>
+<p>上面的代码表示保存后自动格式代码，每行最多 100 个字符，去除分号，使用单引号。更多配置可以参考官方地址<a href="https://prettier.io/docs/en/options.html" target="_blank" rel="noopener">这里</a>。这样子就大功告成啦，来看下效果～</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1frxfsvhjm0g30dx0a1q36.gif" alt="prettier"></p>
+<h3 id="团队项目开发"><a href="#团队项目开发" class="headerlink" title="团队项目开发"></a>团队项目开发</h3><p>在团队项目开发中，我们会将<code>prettier</code>工具集成到项目里面去，在提交代码的时候利用<code>githook</code>格式化代码，保证提交到远程仓库的代码是一致性的代码风格。</p>
+<ol>
+<li><p>在项目根目录下创建配置文件<code>.prettierrc.yml</code>，这里我使用的是 yml 语法，也可以使用<code>json</code>，<code>js</code>等文件格式。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .prettierrc</span></span><br><span class="line"><span class="attr">tabWidth:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">useTabs:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">semi:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">singleQuote:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">trailingComma:</span> <span class="string">'es5'</span></span><br><span class="line"><span class="attr">bracketSpacing:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">jsxBracketSameLine:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">arrowParens:</span> <span class="string">'avoid'</span></span><br></pre></td></tr></table></figure>
+<p>具体的配置信息可以参考官方文档。</p>
+</li>
+<li><p><code>prettier</code>支持多种<code>pre-commit hook</code>，这里介绍<code>git commit</code>时候的钩子。安装下方依赖：</p>
+<pre><code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add pretty-quick husky --dev</span><br></pre></td></tr></table></figure>
+
+并且在项目的package.json文件中增加`scripts`：
+
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"precommit"</span>: <span class="string">"pretty-quick --staged"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><p>做完上述两个步骤就能够愉快的开始开发啦～当你提交代码到 git 仓库的时候，<code>prettier</code>就会自动帮你格式化哟～好了，功力未深，有错还望指正～</p>
+</li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/07/11/使用-ES7-中的-Decorator-来简化代码/" data-toggle="tooltip" data-placement="top" title="使用 ES7 中的 Decorator 来简化代码">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/05/05/理解ES6的Proxy/" data-toggle="tooltip" data-placement="top" title="理解ES6的Proxy">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#prettier" title="prettier">prettier</a>
+                        
+                          <a class="tag" href="/tags/#code" title="code">code</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Allin 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

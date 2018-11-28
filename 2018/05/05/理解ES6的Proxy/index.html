@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Allin的博客">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          理解ES6的Proxy - Allin的博客 | Allin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite.com/2018/05/05/理解ES6的Proxy/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Allin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#ES6" title="ES6">ES6</a>
+                        
+                    </div>
+                    <h1>理解ES6的Proxy</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by linchinghao on
+                        2018-05-05
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>Proxy 是 ES6 中的新特性之一。Proxy 用于修改某些操作的默认行为，比如属性 get\set，属性枚举，函数调用等。借助 Proxy，我们可以对 javascript 元级别进行编程，也即元编程。<br>Proxy 可以理解成是对目标对象的一种拦截，或者代理，对目标对象的访问都必须通过这层拦截。所以可以在拦截这一层做过滤、改写等等操作。</p>
+<h2 id="Proxy-基础使用"><a href="#Proxy-基础使用" class="headerlink" title="Proxy 基础使用"></a>Proxy 基础使用</h2><p>ES6 原生提供 Proxy 构造函数，用于生成 Proxy 实例。该构造函数需要传递两个参数：</p>
+<ul>
+<li>target 目标对象，即要代理的对象</li>
+<li>handler 包含一系列拦截行为的配置对象</li>
+</ul>
+<p>一个简单的拦截读取属性行为的例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> target = &#123;</span><br><span class="line">    name: <span class="string">'allin'</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(target.name); <span class="comment">// allin</span></span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(target,  &#123;</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params">target, property</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'zoe'</span>; <span class="comment">// 拦截并返回一个新的返回值</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">p.name; <span class="comment">// zoe</span></span><br></pre></td></tr></table></figure>
+<p>上面的例子中，我实例化了一个 Proxy 实例，对 target 对象的属性访问进行了拦截，其中，handler 配置对象有一个 get 方法，get 方法的两个参数分别是目标对象和所要访问的属性。因此，访问任何属性都会返回’zoe’。</p>
+<h2 id="Proxy-支持的拦截操作"><a href="#Proxy-支持的拦截操作" class="headerlink" title="Proxy 支持的拦截操作"></a>Proxy 支持的拦截操作</h2><p>Proxy 支持的拦截操作有很多，我只列出一些常用的拦截行为，具体的见<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Meta_programming" target="_blank" rel="noopener">Proxy-MDN</a>。</p>
+<ol>
+<li><p>get(target, property, receiver)<br>该方法用于拦截属性的读取，最后的 receiver 参数是可选参数，当 target 对象设置了 propKey 属性的 get 函数，receiver 对象会绑定 get 函数的 this 对象。</p>
+</li>
+<li><p>set(target, property, receiver)<br>该方法用于拦截对象属性的设置。</p>
+<p> 例如：</p>
+<p> <code>js let handler = { set: function(obj, prop, value) { if (prop === &#39;age&#39;) { if(!Number.isInteger(value)) { throw new Error(&#39;年龄必须是整数！&#39;) } } obj[prop] = value; } } let person = new Proxy({}, handler); person.name = &#39;allin&#39;; person.age = &#39;old&#39;; // ERROR person.age = 18; // GREAT person.age; //18</code><br>上面的例子我们设置了 set 方法，用于校验 age 属性是否是整数，如果不是则抛出类型错误，这种数据校验在对一个对象赋值时是非常有用的。</p>
+</li>
+<li><p>defineProperty(target, propKey, propDesc)<br>该方法用于拦截 Object.defineProperty。</p>
+<p>例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(</span><br><span class="line">  &#123;&#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    defineProperty: <span class="function"><span class="keyword">function</span>(<span class="params">target, key, des</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(p, name, &#123;</span><br><span class="line">  value: <span class="string">'allin'</span></span><br><span class="line">&#125;) <span class="comment">// Uncaught TypeError: 'defineProperty' on proxy: trap returned falsish for property ''</span></span><br></pre></td></tr></table></figure>
+<p>上面例子中定义了对 defineProperty 的拦截，导致后面在添加新属性时报错。</p>
+</li>
+<li><p>apply(target, object, args)<br>该方法用于拦截 Proxy 实例作为函数调用的操作。比如 proxy(…args), proxy.call(obj, …args), proxy.apply(…)。</p>
+<p>例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> target = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'target'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(target, &#123;</span><br><span class="line">  apply: <span class="function"><span class="keyword">function</span>(<span class="params">target, ctx, args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'proxy'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">p() == target() <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>上面例子中，定义了 apply 拦截符，当调用 p 时，就会返回新的字符串。</p>
+</li>
+</ol>
+<p>5) construct(target, args, proxy)<br>   该方法用于拦截 Proxy 实例作为构造函数调用的操作。比如 new Proxy(…)。</p>
+<p>   例子：</p>
+   <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> <span class="built_in">Proxy</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;, &#123;</span><br><span class="line">  construct: <span class="function"><span class="keyword">function</span>(<span class="params">target, args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      value: args[<span class="number">0</span>] * <span class="number">2</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">new</span> p(<span class="number">1</span>).value <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<p>   上面的例子中，使用了 construct 拦截了 new 命令，使其实例化时返回一个新的对象。</p>
+<h2 id="Proxy-的用途"><a href="#Proxy-的用途" class="headerlink" title="Proxy 的用途"></a>Proxy 的用途</h2><p>Proxy 的功能非常强大，配合另一个 ES6 特性 Reflect。Proxy 能用来数据验证，数据绑定，数据观察等等。下面举个简单的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; METHODS &#125; = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line"><span class="keyword">const</span> api = <span class="keyword">new</span> <span class="built_in">Proxy</span>(</span><br><span class="line">  &#123;&#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    get(target, propKey) &#123;</span><br><span class="line">      <span class="keyword">const</span> method = METHODS.find(<span class="function"><span class="params">method</span> =&gt;</span> propKey.startsWith(method.toLowerCase()))</span><br><span class="line">      <span class="keyword">if</span> (!method) <span class="keyword">return</span></span><br><span class="line">      <span class="keyword">const</span> path =</span><br><span class="line">        <span class="string">'/'</span> +</span><br><span class="line">        propKey</span><br><span class="line">          .substring(method.length)</span><br><span class="line">          .replace(<span class="regexp">/([a-z])([A-Z])/g</span>, <span class="string">'$1/$2'</span>)</span><br><span class="line">          .replace(<span class="regexp">/\$/g</span>, <span class="string">'/$/'</span>)</span><br><span class="line">          .toLowerCase()</span><br><span class="line">      <span class="keyword">return</span> <span class="function">(<span class="params">...args</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> finalPath = path.replace(<span class="regexp">/\$/g</span>, () =&gt; args.shift())</span><br><span class="line">        <span class="keyword">const</span> queryOrBody = args.shift() || &#123;&#125;</span><br><span class="line">        <span class="comment">// You could use fetch here</span></span><br><span class="line">        <span class="comment">// return fetch(finalPath, &#123; method, body: queryOrBody &#125;)</span></span><br><span class="line">        <span class="built_in">console</span>.log(method, finalPath, queryOrBody)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">// GET /</span></span><br><span class="line">api.get()</span><br><span class="line"><span class="comment">// GET /users</span></span><br><span class="line">api.getUsers()</span><br><span class="line"><span class="comment">// GET /users/1234/likes</span></span><br><span class="line">api.getUsers$Likes(<span class="string">'1234'</span>)</span><br><span class="line"><span class="comment">// GET /users/1234/likes?page=2</span></span><br><span class="line">api.getUsers$Likes(<span class="string">'1234'</span>, &#123; <span class="attr">page</span>: <span class="number">2</span> &#125;)</span><br><span class="line"><span class="comment">// POST /items with body</span></span><br><span class="line">api.postItems(&#123; <span class="attr">name</span>: <span class="string">'Item name'</span> &#125;)</span><br><span class="line"><span class="comment">// api.foobar is not a function</span></span><br><span class="line">api.foobar()</span><br></pre></td></tr></table></figure>
+<p>上面例子中使用 Proxy 实现了一个小型请求库，是不是非常有趣～</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><a href="https://medium.com/dailyjs/how-to-use-javascript-proxies-for-fun-and-profit-365579d4a9f8" target="_blank" rel="noopener">https://medium.com/dailyjs/how-to-use-javascript-proxies-for-fun-and-profit-365579d4a9f8</a></li>
+<li><a href="https://github.com/mikaelbr/proxy-fun" target="_blank" rel="noopener">https://github.com/mikaelbr/proxy-fun</a></li>
+<li><a href="https://medium.com/@ideepak.jsd/why-to-use-javascript-proxy-5cdc69d943e3" target="_blank" rel="noopener">https://medium.com/@ideepak.jsd/why-to-use-javascript-proxy-5cdc69d943e3</a></li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2018/06/06/使用prettier随心所欲写代码/" data-toggle="tooltip" data-placement="top" title="使用prettier随心所欲写代码">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/11/24/React-Redux-Style-Guide/" data-toggle="tooltip" data-placement="top" title="React/Redux Style Guide">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#ES6" title="ES6">ES6</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/linchinghao">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Allin 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://yoursite.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -5,6 +5,7 @@ read and think, write something
 2019 年
 
 1月
+
 [2018这一年](https://github.com/linchinghao/blog/issues/19)
 
 

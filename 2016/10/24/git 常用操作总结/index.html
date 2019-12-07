@@ -13,11 +13,11 @@
 
     <title>
         
-          git 常用操作总结 - Allin的博客 | Allin&#39;s Blog
+          git 常用操作总结 - Alin的博客 | Alin&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://linqhc.com/2016/10/24/git 常用操作总结/">
+    <link rel="canonical" href="http://linqhc.me/2016/10/24/git 常用操作总结/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -67,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Allin</a>
+            <a class="navbar-brand" href="/">Alin</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -90,14 +90,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -149,7 +149,7 @@
     <!-- Main Content -->
     
 <!-- Image to hack wechat -->
-<!-- <img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0"> -->
 <!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
 
 <!-- Post Header -->
@@ -171,7 +171,7 @@
                     <h1>git 常用操作总结</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by Allin on
+                        Posted by Alin on
                         2016-10-24
                     </span>
                 </div>
@@ -191,7 +191,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="几个重要的名词"><a href="#几个重要的名词" class="headerlink" title="几个重要的名词"></a>几个重要的名词</h3><p><img src="http://ob8200rxm.bkt.clouddn.com/git%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E6%80%BB%E7%BB%93/a4d03258f3d24357135c3448fc21c0c2_articlex.png" alt="trees.png"></p>
+                <h3 id="几个重要的名词"><a href="#几个重要的名词" class="headerlink" title="几个重要的名词"></a>几个重要的名词</h3><p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/git-img-2019-12-7.png?x-oss-process=style/alin" alt="git-img-2019-12-7.png"></p>
 <ul>
 <li>Workspace：工作区</li>
 <li>Index / Stage：暂存区</li>
@@ -199,61 +199,61 @@
 <li>Remote：远程仓库</li>
 </ul>
 <h3 id="Git-配置"><a href="#Git-配置" class="headerlink" title="Git 配置"></a>Git 配置</h3><p>设定 用户名／电子邮件地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;Your username&quot;</span><br><span class="line">$ git config --global user.email &quot;Your@email.com&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"Your username"</span></span><br><span class="line">$ git config --global user.email <span class="string">"Your@email.com"</span></span><br></pre></td></tr></table></figure>
 <p>输出彩色</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global color.ui true</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global color.ui <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 <p>设定命令别名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global alias.&lt;aliasname&gt; &lt;command&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global <span class="built_in">alias</span>.&lt;aliasname&gt; &lt;<span class="built_in">command</span>&gt;</span><br></pre></td></tr></table></figure>
 <p>显示设定菜单</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global list</span><br></pre></td></tr></table></figure>
 <h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>将当前目录初始化为 git 数据库  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br></pre></td></tr></table></figure>
 <p>查看状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git status</span><br></pre></td></tr></table></figure>
 <p>查看日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git log</span><br><span class="line">$ git log --pretty=oneline  (单行模式)</span><br><span class="line">$ git log --pretty=format:&apos;%h %ad | %s%d [%an]&apos; --graph --date=short (漂亮的输出格式)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">log</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=oneline  (单行模式)</span><br><span class="line">$ git <span class="built_in">log</span> --pretty=format:<span class="string">'%h %ad | %s%d [%an]'</span> --graph --date=short (漂亮的输出格式)</span><br></pre></td></tr></table></figure>
 <p>添加标签</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag [tagname]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git tag [tagname]</span><br></pre></td></tr></table></figure>
 <p>显示暂存区和工作区的差异</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff</span><br></pre></td></tr></table></figure>
 <p>添加文件或目录到索引（暂存区)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add [filename]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git add [filename]</span><br></pre></td></tr></table></figure>
 <p>将暂存区生成快照并提交</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m &apos;commit message&apos; (提交到仓库)</span><br><span class="line">$ git commit -v (提交时显示所有diff信息)</span><br><span class="line">$ git commit -a (提交工作区自上次commit的变化)</span><br><span class="line">$ git commit --amend -m &apos;commit message&apos; (替代上一次提交)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git commit -m <span class="string">'commit message'</span> (提交到仓库)</span><br><span class="line">$ git commit -v (提交时显示所有diff信息)</span><br><span class="line">$ git commit -a (提交工作区自上次commit的变化)</span><br><span class="line">$ git commit --amend -m <span class="string">'commit message'</span> (替代上一次提交)</span><br></pre></td></tr></table></figure>
 <p>停止跟踪指定文件，但该文件保留在工作区</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached [filename]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached [filename]</span><br></pre></td></tr></table></figure>
 <p>删除工作区文件并放入暂存区</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm [filename]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm [filename]</span><br></pre></td></tr></table></figure>
 <h3 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h3><p>撤销本地修改</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -- [filename]</span><br><span class="line">$ git checkout -- .</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -- [filename]</span><br><span class="line">$ git checkout -- .</span><br></pre></td></tr></table></figure>
 <p>重置暂存区和工作区，与上一次commit保持一致</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard ［filename］</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git reset --hard ［filename］</span><br></pre></td></tr></table></figure>
 <h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>创建分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch [name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch [name]</span><br></pre></td></tr></table></figure>
 <p>切换分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout [name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout [name]</span><br></pre></td></tr></table></figure>
 <p>创建并切换分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b [name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b [name]</span><br></pre></td></tr></table></figure>
 <p>合并分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge [name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git merge [name]</span><br></pre></td></tr></table></figure>
 <p>删除分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d [name]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch -d [name]</span><br></pre></td></tr></table></figure>
 <p>查看分支</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br></pre></td></tr></table></figure>
 <h3 id="远程同步"><a href="#远程同步" class="headerlink" title="远程同步"></a>远程同步</h3><p>添加远程库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourrepoistry.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:yourname/yourrepoistry.git</span><br></pre></td></tr></table></figure>
 <p>推送本地仓库到远程库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master (第一次push使用 -u，将本地的master分支与远程的master分支关联起来，以后推送或拉取就可以简化命令)</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master (第一次push使用 -u，将本地的master分支与远程的master分支关联起来，以后推送或拉取就可以简化命令)</span><br><span class="line">$ git push origin master</span><br></pre></td></tr></table></figure>
 <p>克隆现有的远程数据库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone [url]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> [url]</span><br></pre></td></tr></table></figure>
 <p>查看远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote -v</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote -v</span><br></pre></td></tr></table></figure>
 <p>查看远程数据库分支的修改内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git fetch origin master</span><br></pre></td></tr></table></figure>
 <p>拉取远程数据库的分支的变化，并于本地分支合并</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull [remote]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull [remote]</span><br></pre></td></tr></table></figure>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>忽略文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git ignore [file]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git ignore [file]</span><br></pre></td></tr></table></figure>
 
                 <hr>
 
@@ -265,6 +265,10 @@
                             <a href="/2016/10/24/理解Javascript面向对象编程/" data-toggle="tooltip" data-placement="top" title="理解 Javascript 面向对象编程">&larr; Previous Post</a>
                         </li>
                     
+                    
+                        <li class="next">
+                            <a href="/2016/10/24/CSS 查漏补缺/" data-toggle="tooltip" data-placement="top" title="CSS 查漏补缺">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -383,7 +387,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Allin 2019 
+                    Copyright &copy; Alin 2019 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
@@ -440,7 +444,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://linqhc.com/js/jquery.tagcloud.js",function(){
+        async("http://linqhc.me/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -474,7 +478,7 @@
 
 
 <!-- Image to hack wechat -->
-<img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0" />
+<img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>

@@ -13,11 +13,11 @@
 
     <title>
         
-          记一次前端面试 - Allin的博客 | Allin&#39;s Blog
+          记一次前端面试 - Alin的博客 | Alin&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://linqhc.com/2016/10/30/记一次前端面试/">
+    <link rel="canonical" href="http://linqhc.me/2016/10/30/记一次前端面试/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -67,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Allin</a>
+            <a class="navbar-brand" href="/">Alin</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -90,14 +90,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -149,7 +149,7 @@
     <!-- Main Content -->
     
 <!-- Image to hack wechat -->
-<!-- <img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0"> -->
 <!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
 
 <!-- Post Header -->
@@ -171,7 +171,7 @@
                     <h1>记一次前端面试</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by Allin on
+                        Posted by Alin on
                         2016-10-30
                     </span>
                 </div>
@@ -241,8 +241,9 @@
 </table>
 <h3 id="3-原型链的理解"><a href="#3-原型链的理解" class="headerlink" title="3. 原型链的理解"></a>3. 原型链的理解</h3><p>Javascript 使用原型链来解析属性值。原型链描述了 javascript 引擎如何从对象查找到原型以及原型的原型，来定位对象的属性值。当请求对象的属性时，javascript 引擎首先直接在该对象查找。如果找不到该属性，则查找原型（保存在对象的<code>__proto__</code>属性中），查看原型是否包含了请求的属性。</p>
 <p>如果 javascript 引擎在对象的原型上找不到该属性，它就查找原型的原型（原型也是一个对象，所以它也有原型）。依此类推，当 javascript 到达 Object 的原型（null）时，原型链也就结束了。如果 javascript 在原型链的所有地方都找不到请求的属性，则返回 undefined。</p>
-<p>一张很经典的图，需反复理解：<br><img src="http://ob8200rxm.bkt.clouddn.com/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/Efyemq7.jpg%21web.jpeg" alt="原型链"></p>
-<h3 id="4-OSI-网络模型"><a href="#4-OSI-网络模型" class="headerlink" title="4. OSI 网络模型"></a>4. OSI 网络模型</h3><p><img src="http://ob8200rxm.bkt.clouddn.com/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95/YR7niu3.png%21web.png" alt="osi"><br>开放系统互连参考模型 (Open System Interconnect 简称 OSI）是国际标准化组织(ISO)和国际电报电话咨询委员会(CCITT)联合制定的开放系统互连参考模型，为开放式互连信息系统提供了一种功能结构的框架。</p>
+<p>一张很经典的图，需反复理解：<br><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/js-prototype-原型链-2019-12-7.jpg?x-oss-process=style/alin" alt="js-prototype-原型链-2019-12-7.jpg"></p>
+<h3 id="4-OSI-网络模型"><a href="#4-OSI-网络模型" class="headerlink" title="4. OSI 网络模型"></a>4. OSI 网络模型</h3><p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/osi-2019-12-7.png?x-oss-process=style/alin" alt="osi-2019-12-7.png"></p>
+<p>开放系统互连参考模型 (Open System Interconnect 简称 OSI）是国际标准化组织(ISO)和国际电报电话咨询委员会(CCITT)联合制定的开放系统互连参考模型，为开放式互连信息系统提供了一种功能结构的框架。</p>
 <p>它从低到高分别是：物理层、数据链路层、网络层、传输层、会话层、表示层和应用层。</p>
 <ol>
 <li>物理层：利用传输介质为数据链路层提供物理连接，实现比特流的传输</li>
@@ -526,7 +527,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Allin 2019 
+                    Copyright &copy; Alin 2019 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
@@ -583,7 +584,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://linqhc.com/js/jquery.tagcloud.js",function(){
+        async("http://linqhc.me/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -617,7 +618,7 @@
 
 
 <!-- Image to hack wechat -->
-<img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0" />
+<img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>

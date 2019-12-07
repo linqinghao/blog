@@ -13,11 +13,11 @@
 
     <title>
         
-          谈 Javascript 模块化 - Allin的博客 | Allin&#39;s Blog
+          谈 Javascript 模块化 - Alin的博客 | Alin&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://linqhc.com/2016/10/30/谈-Javascript-模块化/">
+    <link rel="canonical" href="http://linqhc.me/2016/10/30/谈-Javascript-模块化/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -67,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Allin</a>
+            <a class="navbar-brand" href="/">Alin</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -90,14 +90,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -149,7 +149,7 @@
     <!-- Main Content -->
     
 <!-- Image to hack wechat -->
-<!-- <img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0"> -->
 <!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
 
 <!-- Post Header -->
@@ -171,7 +171,7 @@
                     <h1>谈 Javascript 模块化</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by Allin on
+                        Posted by Alin on
                         2016-10-30
                     </span>
                 </div>
@@ -204,38 +204,37 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这样写的坏处就是污染了全局对象，很容易出现命名冲突。</p>
 <p>再加上命名空间吧，这样就能防止命名冲突了。但是 js 是没有命名空间的，用对象来模拟。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myModule = &#123;</span><br><span class="line">  <span class="comment">// 命名空间</span></span><br><span class="line">  foo: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  bar: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">myModule.foo()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myModule = &#123;</span><br><span class="line">  <span class="comment">// 命名空间</span></span><br><span class="line">  foo: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  bar: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">&#125;;</span><br><span class="line">myModule.foo();</span><br></pre></td></tr></table></figure>
 <p>这样子就减少了全局对象的变量，也能很好的解决命名冲突的问题，但是这样不安全，我们在外部可以随意修改内部成员。比如：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = &#123;</span><br><span class="line">  title: <span class="string">'app'</span>,</span><br><span class="line">  show: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">app.title = <span class="string">'hello'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = &#123;</span><br><span class="line">  title: <span class="string">'app'</span>,</span><br><span class="line">  show: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">&#125;;</span><br><span class="line">app.title = <span class="string">'hello'</span>;</span><br></pre></td></tr></table></figure>
 <p>如何解决这个问题？可以通过 js 的立即执行函数来隐藏内部成员。于是：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myModule = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _private = <span class="string">'i am private'</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(_private)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    foo: foo</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)()</span><br><span class="line">myModule.foo()</span><br><span class="line">myModule._private <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myModule = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _private = <span class="string">'i am private'</span>;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(_private);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    foo: foo,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line">myModule.foo();</span><br><span class="line">myModule._private; <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
 <p>我们只将模块的公用方法暴露出来，这样在模块外部无法修改我们没有暴露出来的变量、函数。</p>
 <p>那如何引入依赖？立即执行函数(IIFE)可以这样做：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Module = (<span class="function"><span class="keyword">function</span>(<span class="params">$</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _$body = $(<span class="string">'body'</span>) <span class="comment">// we can use jQuery now!</span></span><br><span class="line">  <span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(_$body) <span class="comment">// 特权方法</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Revelation Pattern</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    foo: foo</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)(jQuery)</span><br><span class="line"></span><br><span class="line">Module.foo()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Module = (<span class="function"><span class="keyword">function</span>(<span class="params">$</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _$body = $(<span class="string">'body'</span>); <span class="comment">// we can use jQuery now!</span></span><br><span class="line">  <span class="keyword">var</span> foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(_$body); <span class="comment">// 特权方法</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Revelation Pattern</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    foo: foo,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)(jQuery);</span><br><span class="line"></span><br><span class="line">Module.foo();</span><br></pre></td></tr></table></figure>
 <p>这就是实现 js 模块化的基础。</p>
 <h2 id="文件依赖"><a href="#文件依赖" class="headerlink" title="文件依赖"></a>文件依赖</h2><p>有了封装，还是不够的。比如我们的项目结构有可能是这样：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"jquery.js"</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span></span><br><span class="line">&lt;script src="dialog.js"&gt;&lt;script&gt;</span><br><span class="line">&lt;script src="tooltip.js"&gt;&lt;script&gt;</span><br><span class="line">&lt;script src="toast.js"&gt;&lt;script&gt;</span><br><span class="line">&lt;script src="handlebar.js"&gt;&lt;script&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>这就造成了一些问题，依赖关系模糊，我们需要手动解析模块和库的依赖项，在特别大的项目里，会越来越难以管理。并且，这样也会造成请求过多。因此，我们需要依赖管理和按需加载。</p>
 <h2 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h2><p>CommonJS 是一种规范，它是由 NodeJS 发扬光大的，第一个流行的模块化规范是由服务器端的 JavaScript 应用带来的。</p>
-<h3 id="模块的定义和引用"><a href="#模块的定义和引用" class="headerlink" title="模块的定义和引用"></a>模块的定义和引用</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module1.js</span></span><br><span class="line"><span class="comment">// 模块定义</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Hello Module'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = log</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// 加载模块</span></span><br><span class="line"><span class="keyword">var</span> module1 = <span class="built_in">require</span>(<span class="string">'./module1'</span>)</span><br><span class="line"></span><br><span class="line">module1.log()</span><br></pre></td></tr></table></figure>
+<h3 id="模块的定义和引用"><a href="#模块的定义和引用" class="headerlink" title="模块的定义和引用"></a>模块的定义和引用</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module1.js</span></span><br><span class="line"><span class="comment">// 模块定义</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Hello Module'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = log;</span><br><span class="line"></span><br><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="comment">// 加载模块</span></span><br><span class="line"><span class="keyword">var</span> module1 = <span class="built_in">require</span>(<span class="string">'./module1'</span>);</span><br><span class="line"></span><br><span class="line">module1.log();</span><br></pre></td></tr></table></figure>
 <p>这就是模块的定义以及引用的简单例子，我们可以发现<code>require</code>是同步的，也就是阻塞的。同步加载对于服务器不是问题，但是浏览器由于网速个方面原因的限制，它是异步加载的。因此 CommonJS 不适用于浏览器端。后来就出现了<code>AMD</code>以及<code>CMD</code>规范。</p>
-<h2 id="AMD-和-CMD"><a href="#AMD-和-CMD" class="headerlink" title="AMD 和 CMD"></a>AMD 和 CMD</h2><h3 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h3><p>AMD 即<code>Asynchronous Module Definition</code>，中文名是异步模块定义的意思。它是一个在浏览器端模块化开发的规范，实际上，AMD 是 <code>RequireJS</code> 在推广过程中对模块定义的规范化的产出。</p>
-<p>一个简单的应用<code>Requirejs</code>的例子：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义模块 myModule.js</span></span><br><span class="line">define(</span><br><span class="line">    [<span class="string">"jquery"</span>],  <span class="comment">//依赖</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">$</span>)</span>&#123;  <span class="comment">//这个回调会在所有依赖都被加载后才执行</span></span><br><span class="line">		<span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">			<span class="built_in">console</span>.log($(<span class="string">'body'</span>));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> &#123;</span><br><span class="line">			log: log;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载模块 main.js</span></span><br><span class="line"><span class="built_in">require</span>([<span class="string">'myModule'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">myModule</span>) </span>&#123;</span><br><span class="line">	myModule.log();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>require()函数在加载依赖的函数的时候是异步加载的，这样浏览器不会失去响应，它指定的回调函数，只有前面的模块都加载成功后，才会运行，解决了依赖性的问题。</p>
-<h3 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h3><p>CMD 即<code>Common Module Definition</code>通用模块定义，CMD 规范是国内发展出来的，CMD 是 SeaJS 对模块定义的规范化产出，SeaJS 要解决的问题和<code>requireJS</code>一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同。</p>
-<p>一个简单的应用<code>Seajs</code>的例子：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义模块  myModule.js</span></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require, exports, module</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> $ = <span class="built_in">require</span>(<span class="string">'jquery.js'</span>)</span><br><span class="line">  $(<span class="string">'div'</span>).addClass(<span class="string">'active'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载模块</span></span><br><span class="line">seajs.use([<span class="string">'myModule.js'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">my</span>) </span>&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="AMD-和-CMD"><a href="#AMD-和-CMD" class="headerlink" title="AMD 和 CMD"></a>AMD 和 CMD</h2><h3 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h3><p>AMD 即<code>Asynchronous Module Definition</code>，中文名是异步模块定义的意思。它是一个在浏览器端模块化开发的规范，实际上，AMD 是 RequireJS 在推广过程中对模块定义的规范化的产出。</p>
+<p>一个简单的应用 Requirejs 的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义模块 myModule.js</span></span><br><span class="line">define([<span class="string">"jquery"</span>], <span class="function"><span class="keyword">function</span>(<span class="params">$</span>) </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	  <span class="built_in">console</span>.log($(<span class="string">'body'</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> &#123; <span class="attr">log</span>: log; &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载模块 main.js</span></span><br><span class="line"><span class="built_in">require</span>([<span class="string">'myModule'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">myModule</span>) </span>&#123;</span><br><span class="line">	myModule.log();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>require()</code>函数在加载依赖的函数的时候是异步加载的，这样浏览器不会失去响应，它指定的回调函数，只有前面的模块都加载成功后，才会运行，解决了依赖性的问题。</p>
+<h3 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h3><p>CMD 即<code>Common Module Definition</code>通用模块定义，CMD 规范是国内发展出来的，CMD 是 SeaJS 对模块定义的规范化产出，SeaJS 要解决的问题和 RequireJS 一样，只不过在模块定义方式和模块加载（可以说运行、解析）时机上有所不同。</p>
+<p>一个简单的应用 Seajs 的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义模块  myModule.js</span></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require, exports, module</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> $ = <span class="built_in">require</span>(<span class="string">'jquery.js'</span>);</span><br><span class="line">  $(<span class="string">'div'</span>).addClass(<span class="string">'active'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加载模块</span></span><br><span class="line">seajs.use([<span class="string">'myModule.js'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">my</span>) </span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
 <h3 id="AMD-和-CMD-的区别"><a href="#AMD-和-CMD-的区别" class="headerlink" title="AMD 和 CMD 的区别"></a>AMD 和 CMD 的区别</h3><p>两者最明显的区别就是在模块定义对依赖的处理不同</p>
 <ul>
 <li>AMD 推崇依赖前置，在定义模块的时候就要声明其依赖的模块</li>
 <li>CMD 推崇就近依赖，只有在用到某个模块的时候再去 require</li>
 </ul>
 <p>两者都是异步加载模块，只是对依赖模块的执行时机处理不同。</p>
-<h2 id="在最后"><a href="#在最后" class="headerlink" title="在最后"></a>在最后</h2><p>其实，这不是最后，Javascript 模块化还没完。<code>Browserify</code>和<code>Webpack</code>让 Commonjs 规范在浏览器实现，ES6 的到来也有自己实现的<code>Module</code>，由于本人也在学习的过程，这里就先不表述。</p>
+<h2 id="在最后"><a href="#在最后" class="headerlink" title="在最后"></a>在最后</h2><p>其实，这不是最后，Javascript 模块化还没完。Browserify 和 Webpack 让 Commonjs 规范在浏览器实现，ES6 的到来也有自己实现的 Module，由于本人也在学习的过程，这里就先不表述。</p>
 <p>最后，因为本人能力有限，有什么表述错误都欢迎指正！thanx:)</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="http://segmentfault.com/a/1190000004322358" target="_blank" rel="noopener">JavaScript：彻底理解同步、异步和事件循环</a></li>
 <li><a href="http://www.cnblogs.com/dolphinX/p/4381855.html" target="_blank" rel="noopener">前端模块化</a></li>
 <li><a href="http://huangxuan.me/2015/07/09/js-module-7day/" target="_blank" rel="noopener">JavaScript 模块化七日谈</a></li>
 </ol>
@@ -373,7 +372,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Allin 2019 
+                    Copyright &copy; Alin 2019 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
@@ -430,7 +429,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://linqhc.com/js/jquery.tagcloud.js",function(){
+        async("http://linqhc.me/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -464,7 +463,7 @@
 
 
 <!-- Image to hack wechat -->
-<img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0" />
+<img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>

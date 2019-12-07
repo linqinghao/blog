@@ -13,11 +13,11 @@
 
     <title>
         
-          使用prettier随心所欲写代码 - Allin的博客 | Allin&#39;s Blog
+          使用prettier随心所欲写代码 - Alin的博客 | Alin&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://linqhc.com/2018/06/06/使用prettier随心所欲写代码/">
+    <link rel="canonical" href="http://linqhc.me/2018/06/06/使用prettier随心所欲写代码/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -67,7 +67,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Allin</a>
+            <a class="navbar-brand" href="/">Alin</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -90,14 +90,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -149,7 +149,7 @@
     <!-- Main Content -->
     
 <!-- Image to hack wechat -->
-<!-- <img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0"> -->
 <!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
 
 <!-- Post Header -->
@@ -173,7 +173,7 @@
                     <h1>使用prettier随心所欲写代码</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        Posted by Allin on
+                        Posted by Alin on
                         2018-06-06
                     </span>
                 </div>
@@ -193,45 +193,43 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1frxfv1a2tyj30hu0890tm.jpg" alt="prettier"></p>
+                <p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/prettier-img-2019-12-7.jpg?x-oss-process=style/alin" alt="prettier-img-2019-12-7.jpg"></p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol start="2">
 <li>常常在开发的时候，因为自己写的代码有时候不符合项目的代码规范，不符合的代码都会有标红的下划线，然后一直有强迫症需要去改正代码，这可能就会打断自己写代码的思路。看着满屏的红色代码，心情也会很糟糕。</li>
 <li>团队项目在协同开发的时候，每个人写的代码格式不一样，有时候会导致代码难以理解，阅读困难等。</li>
 </ol>
-<p>所以我就在思考有没有一个比较好的工具既能让自己随心所欲的写代码，不需要关心代码规范是怎么样的，提交到远程仓库时候会自动格式化代码。后来就发现了一个非常好的工具可以帮助我们做这些事情。也就是我们今天介绍的<code>prettier</code></p>
-<h2 id="prettier"><a href="#prettier" class="headerlink" title="prettier"></a>prettier</h2><p>官网介绍<code>prettier</code>是一个可配置的代码格式化工具，支持多种语言，包括<code>javascript</code>，<code>jsx</code>，<code>typescript</code>，<code>json</code>等等。它能够保证输出的代码是一致的。官方例子：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne())</span><br></pre></td></tr></table></figure>
-<p>上面代码由于太长，阅读起来十分困难。<code>prettier</code>就能帮我们美化下这份代码。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne())</span><br></pre></td></tr></table></figure>
+<p>所以我就在思考有没有一个比较好的工具既能让自己随心所欲的写代码，不需要关心代码规范是怎么样的，提交到远程仓库时候会自动格式化代码。后来就发现了一个非常好的工具可以帮助我们做这些事情。也就是我们今天介绍的 prettier。</p>
+<h2 id="prettier"><a href="#prettier" class="headerlink" title="prettier"></a>prettier</h2><p>官网介绍 prettier 是一个可配置的代码格式化工具，支持多种语言，包括<code>javascript</code>，<code>jsx</code>，<code>typescript</code>，<code>json</code>等等。它能够保证输出的代码是一致的。官方例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());</span><br></pre></td></tr></table></figure>
+<p>上面代码由于太长，阅读起来十分困难。prettier 就能帮我们美化下这份代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());</span><br></pre></td></tr></table></figure>
 <p>这样子代码阅读起来就非常流畅了。</p>
 <h2 id="prettier-能帮助我们做什么"><a href="#prettier-能帮助我们做什么" class="headerlink" title="prettier 能帮助我们做什么"></a>prettier 能帮助我们做什么</h2><ol>
 <li>它能帮助我们停止无用并且浪费时间的代码风格争论，譬如，缩进的宽度等等。</li>
-<li>手动格式化代码是件非常辛苦的活，<code>prettier</code>就能够帮助我们输出一致的代码，是不是觉得很 cool ～</li>
+<li>手动格式化代码是件非常辛苦的活，prettier 就能够帮助我们输出一致的代码，是不是觉得很 cool ～</li>
 <li>设置 githook 可以减少 PR 中由于 ESLint 规则导致构建失败的样式问题</li>
 <li>不需要关心繁琐的代码规范，专注开发工作</li>
 </ol>
-<h2 id="使用-prettier"><a href="#使用-prettier" class="headerlink" title="使用 prettier"></a>使用 prettier</h2><h3 id="个人日常开发"><a href="#个人日常开发" class="headerlink" title="个人日常开发"></a>个人日常开发</h3><p>以自己日常开发举个例子，我只需要简单配置一下自己想要输出的代码格式，就能随心所欲写代码，格式化的工作交给<code>prettier</code>去做，只要保存一下文件，它就能自动地帮我们纠正自己的代码风格。</p>
-<p>以常用的开发工具 vscode 举个例子，先要在应用商店安装<code>prettier</code>扩展<br><img src="https://ws4.sinaimg.cn/large/006tNc79gy1frxexj17d8j30y40lcagm.jpg" alt="vscode-prettier"></p>
-<p>安装完成后，你就可以格式化文件了，但是<code>prettier</code>使用的是默认的代码风格，我们可以更改为自己喜欢的代码风格。</p>
+<h2 id="使用-prettier"><a href="#使用-prettier" class="headerlink" title="使用 prettier"></a>使用 prettier</h2><h3 id="个人日常开发"><a href="#个人日常开发" class="headerlink" title="个人日常开发"></a>个人日常开发</h3><p>以自己日常开发举个例子，我只需要简单配置一下自己想要输出的代码格式，就能随心所欲写代码，格式化的工作交给 prettier 去做，只要保存一下文件，它就能自动地帮我们纠正自己的代码风格。</p>
+<p>以常用的开发工具 vscode 举个例子，先要在应用商店安装 prettier 扩展<br><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/vscode-prettier-2019-12-7.jpg?x-oss-process=style/alin" alt="vscode-prettier-2019-12-7.jpg"></p>
+<p>安装完成后，你就可以格式化文件了，但是 prettier 使用的是默认的代码风格，我们可以更改为自己喜欢的代码风格。</p>
 <p>我们可以通过在自己项目创建配置文件(<code>.prettierrc</code>)的方式，但是在自己的个人项目会显得冗余，所以可以简单的在 vscode 的用户配置里加上下面这些:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;editor.formatOnSave&quot;: true,</span><br><span class="line">&quot;prettier.printWidth&quot;: 100,</span><br><span class="line">&quot;prettier.semi&quot;: false,</span><br><span class="line">&quot;prettier.singleQuote&quot;: true</span><br></pre></td></tr></table></figure>
 <p>上面的代码表示保存后自动格式代码，每行最多 100 个字符，去除分号，使用单引号。更多配置可以参考官方地址<a href="https://prettier.io/docs/en/options.html" target="_blank" rel="noopener">这里</a>。这样子就大功告成啦，来看下效果～</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1frxfsvhjm0g30dx0a1q36.gif" alt="prettier"></p>
-<h3 id="团队项目开发"><a href="#团队项目开发" class="headerlink" title="团队项目开发"></a>团队项目开发</h3><p>在团队项目开发中，我们会将<code>prettier</code>工具集成到项目里面去，在提交代码的时候利用<code>githook</code>格式化代码，保证提交到远程仓库的代码是一致性的代码风格。</p>
+<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/prettier-play-demo-2019-12-7.gif" alt="prettier-play-demo-2019-12-7.gif"></p>
+<h3 id="团队项目开发"><a href="#团队项目开发" class="headerlink" title="团队项目开发"></a>团队项目开发</h3><p>在团队项目开发中，我们会将 prettier 工具集成到项目里面去，在提交代码的时候利用<code>githook</code>格式化代码，保证提交到远程仓库的代码是一致性的代码风格。</p>
 <ol>
-<li><p>在项目根目录下创建配置文件<code>.prettierrc.yml</code>，这里我使用的是 yml 语法，也可以使用<code>json</code>，<code>js</code>等文件格式。</p>
+<li>在项目根目录下创建配置文件<code>.prettierrc.yml</code>，这里我使用的是 yml 语法，也可以使用<code>json</code>，<code>js</code>等文件格式。</li>
+</ol>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .prettierrc</span></span><br><span class="line"><span class="attr">tabWidth:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">useTabs:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">semi:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">singleQuote:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">trailingComma:</span> <span class="string">'es5'</span></span><br><span class="line"><span class="attr">bracketSpacing:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">jsxBracketSameLine:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">arrowParens:</span> <span class="string">'avoid'</span></span><br></pre></td></tr></table></figure>
 <p>具体的配置信息可以参考官方文档。</p>
-</li>
-<li><p><code>prettier</code>支持多种<code>pre-commit hook</code>，这里介绍<code>git commit</code>时候的钩子。安装下方依赖：</p>
-<pre><code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add pretty-quick husky --dev</span><br></pre></td></tr></table></figure>
-
-并且在项目的package.json文件中增加`scripts`：
-
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"precommit"</span>: <span class="string">"pretty-quick --staged"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre><p>做完上述两个步骤就能够愉快的开始开发啦～当你提交代码到 git 仓库的时候，<code>prettier</code>就会自动帮你格式化哟～好了，功力未深，有错还望指正～</p>
-</li>
+<ol start="2">
+<li><code>prettier</code>支持多种<code>pre-commit hook</code>，这里介绍<code>git commit</code>时候的钩子。安装下方依赖：</li>
 </ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add pretty-quick husky --dev</span><br></pre></td></tr></table></figure>
+<p>并且在项目的 package.json 文件中增加<code>scripts</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"precommit"</span>: <span class="string">"pretty-quick --staged"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>做完上述两个步骤就能够愉快的开始开发啦～当你提交代码到 git 仓库的时候，prettier 就会自动帮你格式化哟～好了，功力未深，有错还望指正～</p>
 
 
                 <hr>
@@ -368,7 +366,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Allin 2019 
+                    Copyright &copy; Alin 2019 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
@@ -425,7 +423,7 @@
 <script>
     // only load tagcloud.js in tag.html
     if($('#tag_cloud').length !== 0){
-        async("http://linqhc.com/js/jquery.tagcloud.js",function(){
+        async("http://linqhc.me/js/jquery.tagcloud.js",function(){
             $.fn.tagcloud.defaults = {
                 //size: {start: 1, end: 1, unit: 'em'},
                 color: {start: '#bbbbee', end: '#0085a1'},
@@ -459,7 +457,7 @@
 
 
 <!-- Image to hack wechat -->
-<img src="http://linqhc.com/img/icon_wechat.png" width="0" height="0" />
+<img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0" />
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>

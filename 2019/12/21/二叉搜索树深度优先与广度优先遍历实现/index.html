@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Thoughts, stories and ideas.">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          二叉搜索树深度优先与广度优先遍历实现 - Alin的博客 | Alin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://linqhc.me/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Alin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#二叉树" title="二叉树">二叉树</a>
+                        
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                    </div>
+                    <h1>二叉搜索树深度优先与广度优先遍历实现</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Alin on
+                        2019-12-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="树数据结构"><a href="#树数据结构" class="headerlink" title="树数据结构"></a>树数据结构</h2><p><strong>树</strong>是一种分层数据的抽象模型。在现实中，家谱或者公司的组织结构与树的数据结构非常相似。</p>
+<h2 id="树的相关术语"><a href="#树的相关术语" class="headerlink" title="树的相关术语"></a>树的相关术语</h2><p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/树的介绍-2019-12-16.png?x-oss-process=style/alin" alt="树的介绍-2019-12-16.png"></p>
+<p>一个树结构包含一系列存在父子关系的节点。每个节点都有一个父节点（除了根节点）以及零个或多个节点。</p>
+<p>位于树顶部的节点叫作<strong>根节点</strong>。它没有父节点。树中的每个元素都叫作节点，节点分为内部节点和外部节点。至少有一个子节点的节点被称为<strong>内部节点</strong>。没有子元素的节点称为<strong>外部节点或者叶子节点</strong>。</p>
+<p><strong>子树</strong>由节点和它的后代构成。</p>
+<p>节点的<strong>深度</strong>取决于它的祖先节点的数量。</p>
+<h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p><strong>二叉树</strong>中的节点最多只能有两个子节点：一个是左侧子节点，另一个是右侧子节点。</p>
+<p><strong>二叉搜索树</strong>是二叉树的一种，但是它只允许在左侧节点存储（比父节点）小的值，在右侧节点存储（比父节点）大的值。</p>
+<h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h2><p>二叉树遍历分为深度优先遍历和广度优先遍历。其中深度优先遍历又可以分为中序、先序、后序遍历。</p>
+<h3 id="深度优先遍历"><a href="#深度优先遍历" class="headerlink" title="深度优先遍历"></a>深度优先遍历</h3><h4 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h4><p>中序遍历是指先访问左节点，然后访问根节点，最后访问右节点。</p>
+<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/中序遍历-2019-12-16.png?x-oss-process=style/alin" alt="中序遍历-2019-12-16.png"></p>
+<p>递归算法：</p>
+<ol>
+<li>若二叉树为空，则算法结束；否则：</li>
+<li>中序遍历根结点的左子树；</li>
+<li>访问根结点；</li>
+<li>中序遍历根结点的右子树；</li>
+</ol>
+<p>实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">_inOrderTraverseNode(node, cb) &#123;</span><br><span class="line">  <span class="keyword">if</span> (node !== <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>._inOrderTraverseNode(node.left, cb)</span><br><span class="line">    cb(node.key)</span><br><span class="line">    <span class="keyword">this</span>._inOrderTraverseNode(node.right, cb)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非递归算法：</p>
+<ol>
+<li>初始化一个栈，将根节点压入栈中，并标记为当前节点(node)；</li>
+<li>当栈为非空时，执行步骤 3，否则执行结束；</li>
+<li>如果当前节点(node)有左子树且没有被 touched，则执行步骤 4，否则执行不步骤 5；</li>
+<li>对当前节点(node)标记 touched，将当前节点的左子树赋值给当前节点(node=node.left) 并将当前节点(node)压入栈中，回到步骤 3；</li>
+<li>清理当前节点(node)的 touched 标记，取出栈中的一个节点标记为当前节点(node)，并访问，若当前节点(node)的右子树为非空，则将该结点的右子树入栈，回到步骤 3；</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">inOrderTraverseNoRecursion(cb, node) &#123;</span><br><span class="line">  node = node || <span class="keyword">this</span>.root</span><br><span class="line">  <span class="keyword">let</span> stack = <span class="keyword">new</span> Stack()</span><br><span class="line">  stack.push(node)</span><br><span class="line">  <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">    <span class="comment">// 左节点先入栈</span></span><br><span class="line">    <span class="keyword">if</span> (node.left &amp;&amp; !node.touched) &#123;</span><br><span class="line">      node.touched = <span class="literal">true</span></span><br><span class="line">      node = node.left</span><br><span class="line">      stack.push(node)</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line">    node.touched &amp;&amp; <span class="keyword">delete</span> node.touched</span><br><span class="line">    node = stack.pop()</span><br><span class="line">    cb &amp;&amp; cb(node.key)</span><br><span class="line">    node.right &amp;&amp; stack.push(node.right)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h4><p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/先序遍历-2019-12-16.png?x-oss-process=style/alin" alt="先序遍历-2019-12-16.png"></p>
+<p>递归算法：</p>
+<ol>
+<li>若二叉树为空，则算法结束，否则：</li>
+<li>访问根结点；</li>
+<li>前序遍历根结点的左子树；</li>
+<li>前序遍历根结点的右子树。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">_preOrderTraverseNode(node, cb) &#123;</span><br><span class="line">  <span class="keyword">if</span> (node !== <span class="literal">null</span>) &#123;</span><br><span class="line">    cb(node.key)</span><br><span class="line">    <span class="keyword">this</span>._preOrderTraverseNode(node.left, cb)</span><br><span class="line">    <span class="keyword">this</span>._preOrderTraverseNode(node.right, cb)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非递归算法：</p>
+<ol>
+<li>初始化一个栈，将根节点压入栈中；</li>
+<li>当栈为非空时，循环执行步骤 3 到 4，否则执行结束；</li>
+<li>出队列取得一个结点，访问该结点；</li>
+<li>若该结点的右子树为非空，则将该结点的右子树入栈，若该结点的左子树为非空，则将该结点的左子树入栈；</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">preOrderTraverseNoRecursion(cb, node) &#123;</span><br><span class="line">  node = node || <span class="keyword">this</span>.root</span><br><span class="line">  <span class="keyword">let</span> stack = <span class="keyword">new</span> Stack()</span><br><span class="line">  stack.push(node)</span><br><span class="line">  <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">    node = stack.pop()</span><br><span class="line">    cb &amp;&amp; cb(node.key)</span><br><span class="line">    <span class="comment">// 右节点先入栈</span></span><br><span class="line">    node.right &amp;&amp; stack.push(node.right)</span><br><span class="line">    node.left &amp;&amp; stack.push(node.left)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h4><p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/后序遍历-2019-12-16.png?x-oss-process=style/alin" alt="后序遍历-2019-12-16.png"></p>
+<p>递归算法：</p>
+<ol>
+<li>若二叉树为空，则算法结束，否则：</li>
+<li>后序遍历根结点的左子树；</li>
+<li>后序遍历根结点的右子树；</li>
+<li>访问根结点。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">_postOrderTraverseNode(node, cb) &#123;</span><br><span class="line">  <span class="keyword">if</span> (node !== <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>._postOrderTraverseNode(node.left, cb)</span><br><span class="line">    <span class="keyword">this</span>._postOrderTraverseNode(node.right, cb)</span><br><span class="line">    cb(node.key)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非递归算法：</p>
+<ol>
+<li>初始化一个栈，将根节点压入栈中，并标记为当前节点(item)；</li>
+<li>当栈为非空时，执行步骤 3，否则执行结束；</li>
+<li>如果当前节点(item)有左子树且没有被 touched，则执行 4，如果被 touched left 但没有被 touched right 则执行 5 否则执行 6；</li>
+<li>对当前节点(item)标记 touched left，将当前节点的左子树赋值给当前节点(item=item.left) 并将当前节点(item)压入栈中，回到 3；</li>
+<li>对当前节点(item)标记 touched right，将当前节点的右子树赋值给当前节点(item=item.right) 并将当前节点(item)压入栈中，回到 3；</li>
+<li>清理当前节点(item)的 touched 标记，弹出栈中的一个节点并访问，然后再将栈顶节点标记为当前节点(item)，回到 3；</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">postOrderTraverseNoRecursion(cb, node) &#123;</span><br><span class="line">  node = node || <span class="keyword">this</span>.root</span><br><span class="line">  <span class="keyword">let</span> stack = <span class="keyword">new</span> Stack()</span><br><span class="line">  stack.push(node)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (!stack.isEmpty()) &#123;</span><br><span class="line">    <span class="comment">// 左节点先入栈</span></span><br><span class="line">    <span class="keyword">if</span> (node.left &amp;&amp; !node.touched) &#123;</span><br><span class="line">      node.touched = <span class="string">'left'</span></span><br><span class="line">      node = node.left</span><br><span class="line">      stack.push(node)</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 有右节点并且未访问则入栈</span></span><br><span class="line">    <span class="keyword">if</span> (node.right &amp;&amp; node.touched !== <span class="string">'right'</span>) &#123;</span><br><span class="line">      node.touched = <span class="string">'right'</span></span><br><span class="line">      node = node.right</span><br><span class="line">      stack.push(node)</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> item = stack.pop()</span><br><span class="line"></span><br><span class="line">    item.touched &amp;&amp; <span class="keyword">delete</span> item.touched</span><br><span class="line"></span><br><span class="line">    cb &amp;&amp; cb(item.key)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指向栈顶的节点</span></span><br><span class="line">    node = stack.peek()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="广度优先遍历"><a href="#广度优先遍历" class="headerlink" title="广度优先遍历"></a>广度优先遍历</h3><p>度优先遍历二叉树(层序遍历)是用队列来实现的，从二叉树的第一层（根结点）开始，自上至下逐层遍历；在同一层中，按照从左到右的顺序对结点逐一访问。</p>
+<p>按照从根结点至叶结点、从左子树至右子树的次序访问二叉树的结点。步骤：</p>
+<ol>
+<li>初始化一个队列，并把根结点入列队；</li>
+<li>当队列为非空时，循环执行步骤 3 到 4，否则执行结束；</li>
+<li>出队列取得一个结点，访问该结点；</li>
+<li>若该结点的左子树为非空，则将该结点的左子树入队列，若该结点的右子树为非空，则将该结点的右子树入队列；</li>
+</ol>
+<p>递归实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 广度优先遍历（递归）</span></span><br><span class="line">breadthFirstSearch(cb, node) &#123;</span><br><span class="line">  node = node || <span class="keyword">this</span>.root</span><br><span class="line">  <span class="keyword">let</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">  queue.enqueue(node)</span><br><span class="line">  bfs(cb)</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bfs</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (queue.isEmpty()) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">let</span> item = queue.dequeue()</span><br><span class="line">    cb &amp;&amp; cb(item.key)</span><br><span class="line">    item.left &amp;&amp; queue.enqueue(item.left)</span><br><span class="line">    item.right &amp;&amp; queue.enqueue(item.right)</span><br><span class="line">    bfs(cb)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非递归实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">breadthFirstSearchNoRecursion(cb, node) &#123;</span><br><span class="line">  node = node || <span class="keyword">this</span>.root</span><br><span class="line">  <span class="keyword">let</span> queue = <span class="keyword">new</span> Queue()</span><br><span class="line">  queue.enqueue(node)</span><br><span class="line">  <span class="keyword">let</span> pointer = <span class="number">0</span></span><br><span class="line">  <span class="keyword">while</span> (pointer &lt; queue.size()) &#123;</span><br><span class="line">    <span class="keyword">let</span> item = queue.list[pointer++]</span><br><span class="line">    cb &amp;&amp; cb(item.key)</span><br><span class="line">    item.left &amp;&amp; queue.enqueue(item.left)</span><br><span class="line">    item.right &amp;&amp; queue.enqueue(item.right)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="完整实现"><a href="#完整实现" class="headerlink" title="完整实现"></a>完整实现</h3><p>完整代码可查看<a href="https://github.com/heiyelin/code/blob/master/data-structure/BinarySearchTree.js" target="_blank" rel="noopener">github</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/01/20/2018这一年/" data-toggle="tooltip" data-placement="top" title="2018这一年">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#二叉树" title="二叉树">二叉树</a>
+                        
+                          <a class="tag" href="/tags/#算法" title="算法">算法</a>
+                        
+                          <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/heiyelin">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Alin 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://linqhc.me/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

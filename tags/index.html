@@ -90,6 +90,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -98,13 +105,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -170,19 +170,25 @@
             <!-- 标签云 -->
             <div id="tag_cloud" class="tags">
                 
-                    <a href="#个人总结" title="个人总结" rel="1">个人总结</a>
+                    <a href="#个人总结" title="个人总结" rel="2">个人总结</a>
                 
                     <a href="#css3" title="css3" rel="1">css3</a>
-                
-                    <a href="#life" title="life" rel="1">life</a>
-                
-                    <a href="#git" title="git" rel="1">git</a>
                 
                     <a href="#react" title="react" rel="1">react</a>
                 
                     <a href="#redux" title="redux" rel="1">redux</a>
                 
                     <a href="#guideline" title="guideline" rel="1">guideline</a>
+                
+                    <a href="#life" title="life" rel="1">life</a>
+                
+                    <a href="#git" title="git" rel="1">git</a>
+                
+                    <a href="#二叉树" title="二叉树" rel="1">二叉树</a>
+                
+                    <a href="#算法" title="算法" rel="1">算法</a>
+                
+                    <a href="#数据结构" title="数据结构" rel="1">数据结构</a>
                 
                     <a href="#prettier" title="prettier" rel="1">prettier</a>
                 
@@ -194,17 +200,11 @@
                 
                     <a href="#fontend" title="fontend" rel="1">fontend</a>
                 
-                    <a href="#ES6" title="ES6" rel="1">ES6</a>
-                
                     <a href="#ES7" title="ES7" rel="1">ES7</a>
                 
                     <a href="#decorator" title="decorator" rel="5">decorator</a>
                 
-                    <a href="#Typescript" title="Typescript" rel="4">Typescript</a>
-                
-                    <a href="#ts" title="ts" rel="4">ts</a>
-                
-                    <a href="#frontend" title="frontend" rel="1">frontend</a>
+                    <a href="#ES6" title="ES6" rel="1">ES6</a>
                 
                     <a href="#oop" title="oop" rel="1">oop</a>
                 
@@ -212,11 +212,11 @@
                 
                     <a href="#code guideline" title="code guideline" rel="1">code guideline</a>
                 
-                    <a href="#二叉树" title="二叉树" rel="1">二叉树</a>
+                    <a href="#Typescript" title="Typescript" rel="4">Typescript</a>
                 
-                    <a href="#算法" title="算法" rel="1">算法</a>
+                    <a href="#ts" title="ts" rel="4">ts</a>
                 
-                    <a href="#数据结构" title="数据结构" rel="1">数据结构</a>
+                    <a href="#frontend" title="frontend" rel="1">frontend</a>
                 
             </div>
 
@@ -243,6 +243,21 @@
                 </div>
                 <hr>
                 
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2020/01/05/The-Blue-In-2019/">
+                        <h2 class="post-title">
+                            The Blue In 2019
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
             </div>
             
             <div class="one-tag-list">
@@ -258,50 +273,6 @@
                      <a href="/2016/10/24/CSS 查漏补缺/">
                         <h2 class="post-title">
                             CSS 查漏补缺
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="life">
-                    <span class="tag-text">life</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2016/11/30/Personal-Summary-in-2016/">
-                        <h2 class="post-title">
-                            Personal Summary in 2016
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="git">
-                    <span class="tag-text">git</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2016/10/24/git 常用操作总结/">
-                        <h2 class="post-title">
-                            git 常用操作总结
                         </h2>
                         
                     </a>
@@ -368,6 +339,116 @@
                      <a href="/2017/11/24/React-Redux-Style-Guide/">
                         <h2 class="post-title">
                             React/Redux Style Guide
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="life">
+                    <span class="tag-text">life</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/11/30/Personal-Summary-in-2016/">
+                        <h2 class="post-title">
+                            Personal Summary in 2016
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="git">
+                    <span class="tag-text">git</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/10/24/git 常用操作总结/">
+                        <h2 class="post-title">
+                            git 常用操作总结
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="二叉树">
+                    <span class="tag-text">二叉树</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
+                        <h2 class="post-title">
+                            二叉搜索树深度优先与广度优先遍历实现
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="算法">
+                    <span class="tag-text">算法</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
+                        <h2 class="post-title">
+                            二叉搜索树深度优先与广度优先遍历实现
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="数据结构">
+                    <span class="tag-text">数据结构</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
+                        <h2 class="post-title">
+                            二叉搜索树深度优先与广度优先遍历实现
                         </h2>
                         
                     </a>
@@ -476,9 +557,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2016/10/30/谈-Javascript-模块化/">
+                     <a href="/2016/10/27/谈谈 Javascript 中的类与继承/">
                         <h2 class="post-title">
-                            谈 Javascript 模块化
+                            谈谈 Javascript 中的类与继承
                         </h2>
                         
                     </a>
@@ -491,9 +572,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/2016/10/27/谈谈 Javascript 中的类与继承/">
+                     <a href="/2016/10/30/谈-Javascript-模块化/">
                         <h2 class="post-title">
-                            谈谈 Javascript 中的类与继承
+                            谈 Javascript 模块化
                         </h2>
                         
                     </a>
@@ -538,28 +619,6 @@
                      <a href="/2016/10/26/gulp之旅-打造属于自己的前端自动化方案/">
                         <h2 class="post-title">
                             gulp 之旅 打造属于自己的前端自动化方案
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="ES6">
-                    <span class="tag-text">ES6</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2018/05/05/理解ES6的Proxy/">
-                        <h2 class="post-title">
-                            理解ES6的Proxy
                         </h2>
                         
                     </a>
@@ -664,6 +723,94 @@
                      <a href="/2018/08/04/译-Typescript中的装饰器与元数据反射-part4/">
                         <h2 class="post-title">
                             [译]Typescript中的装饰器与元数据反射(part4)
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="ES6">
+                    <span class="tag-text">ES6</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2018/05/05/理解ES6的Proxy/">
+                        <h2 class="post-title">
+                            理解ES6的Proxy
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="oop">
+                    <span class="tag-text">oop</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2016/10/24/理解Javascript面向对象编程/">
+                        <h2 class="post-title">
+                            理解 Javascript 面向对象编程
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="eslint">
+                    <span class="tag-text">eslint</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2017/08/24/用-ESLint-帮你写出更加优雅的代码/">
+                        <h2 class="post-title">
+                            用 ESLint 帮你写出更加优雅的代码
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="code guideline">
+                    <span class="tag-text">code guideline</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/2017/08/24/用-ESLint-帮你写出更加优雅的代码/">
+                        <h2 class="post-title">
+                            用 ESLint 帮你写出更加优雅的代码
                         </h2>
                         
                     </a>
@@ -829,138 +976,6 @@
                 
             </div>
             
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="oop">
-                    <span class="tag-text">oop</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2016/10/24/理解Javascript面向对象编程/">
-                        <h2 class="post-title">
-                            理解 Javascript 面向对象编程
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="eslint">
-                    <span class="tag-text">eslint</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2017/08/24/用-ESLint-帮你写出更加优雅的代码/">
-                        <h2 class="post-title">
-                            用 ESLint 帮你写出更加优雅的代码
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="code guideline">
-                    <span class="tag-text">code guideline</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2017/08/24/用-ESLint-帮你写出更加优雅的代码/">
-                        <h2 class="post-title">
-                            用 ESLint 帮你写出更加优雅的代码
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="二叉树">
-                    <span class="tag-text">二叉树</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
-                        <h2 class="post-title">
-                            二叉搜索树深度优先与广度优先遍历实现
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="算法">
-                    <span class="tag-text">算法</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
-                        <h2 class="post-title">
-                            二叉搜索树深度优先与广度优先遍历实现
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="数据结构">
-                    <span class="tag-text">数据结构</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/">
-                        <h2 class="post-title">
-                            二叉搜索树深度优先与广度优先遍历实现
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
 
 
         </div>
@@ -998,7 +1013,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Alin 2019 
+                    Copyright &copy; Alin 2020 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">

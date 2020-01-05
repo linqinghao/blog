@@ -13,11 +13,11 @@
 
     <title>
         
-          使用prettier随心所欲写代码 - Alin的博客 | Alin&#39;s Blog
+          The Blue In 2019 - Alin的博客 | Alin&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://linqhc.me/2018/06/06/使用prettier随心所欲写代码/">
+    <link rel="canonical" href="http://linqhc.me/2020/01/05/The-Blue-In-2019/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,16 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#prettier" title="prettier">prettier</a>
-                        
-                          <a class="tag" href="/tags/#code" title="code">code</a>
+                          <a class="tag" href="/tags/#个人总结" title="个人总结">个人总结</a>
                         
                     </div>
-                    <h1>使用prettier随心所欲写代码</h1>
+                    <h1>The Blue In 2019</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Alin on
-                        2018-06-06
+                        2020-01-05
                     </span>
                 </div>
             </div>
@@ -193,43 +191,19 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/prettier-img-2019-12-7.jpg?x-oss-process=style/alin" alt="prettier-img-2019-12-7.jpg"></p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol start="2">
-<li>常常在开发的时候，因为自己写的代码有时候不符合项目的代码规范，不符合的代码都会有标红的下划线，然后一直有强迫症需要去改正代码，这可能就会打断自己写代码的思路。看着满屏的红色代码，心情也会很糟糕。</li>
-<li>团队项目在协同开发的时候，每个人写的代码格式不一样，有时候会导致代码难以理解，阅读困难等。</li>
-</ol>
-<p>所以我就在思考有没有一个比较好的工具既能让自己随心所欲的写代码，不需要关心代码规范是怎么样的，提交到远程仓库时候会自动格式化代码。后来就发现了一个非常好的工具可以帮助我们做这些事情。也就是我们今天介绍的 prettier。</p>
-<h2 id="prettier"><a href="#prettier" class="headerlink" title="prettier"></a>prettier</h2><p>官网介绍 prettier 是一个可配置的代码格式化工具，支持多种语言，包括<code>javascript</code>，<code>jsx</code>，<code>typescript</code>，<code>json</code>等等。它能够保证输出的代码是一致的。官方例子：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());</span><br></pre></td></tr></table></figure>
-<p>上面代码由于太长，阅读起来十分困难。prettier 就能帮我们美化下这份代码。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());</span><br></pre></td></tr></table></figure>
-<p>这样子代码阅读起来就非常流畅了。</p>
-<h2 id="prettier-能帮助我们做什么"><a href="#prettier-能帮助我们做什么" class="headerlink" title="prettier 能帮助我们做什么"></a>prettier 能帮助我们做什么</h2><ol>
-<li>它能帮助我们停止无用并且浪费时间的代码风格争论，譬如，缩进的宽度等等。</li>
-<li>手动格式化代码是件非常辛苦的活，prettier 就能够帮助我们输出一致的代码，是不是觉得很 cool ～</li>
-<li>设置 githook 可以减少 PR 中由于 ESLint 规则导致构建失败的样式问题</li>
-<li>不需要关心繁琐的代码规范，专注开发工作</li>
-</ol>
-<h2 id="使用-prettier"><a href="#使用-prettier" class="headerlink" title="使用 prettier"></a>使用 prettier</h2><h3 id="个人日常开发"><a href="#个人日常开发" class="headerlink" title="个人日常开发"></a>个人日常开发</h3><p>以自己日常开发举个例子，我只需要简单配置一下自己想要输出的代码格式，就能随心所欲写代码，格式化的工作交给 prettier 去做，只要保存一下文件，它就能自动地帮我们纠正自己的代码风格。</p>
-<p>以常用的开发工具 vscode 举个例子，先要在应用商店安装 prettier 扩展<br><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/vscode-prettier-2019-12-7.jpg?x-oss-process=style/alin" alt="vscode-prettier-2019-12-7.jpg"></p>
-<p>安装完成后，你就可以格式化文件了，但是 prettier 使用的是默认的代码风格，我们可以更改为自己喜欢的代码风格。</p>
-<p>我们可以通过在自己项目创建配置文件(<code>.prettierrc</code>)的方式，但是在自己的个人项目会显得冗余，所以可以简单的在 vscode 的用户配置里加上下面这些:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;editor.formatOnSave&quot;: true,</span><br><span class="line">&quot;prettier.printWidth&quot;: 100,</span><br><span class="line">&quot;prettier.semi&quot;: false,</span><br><span class="line">&quot;prettier.singleQuote&quot;: true</span><br></pre></td></tr></table></figure>
-<p>上面的代码表示保存后自动格式代码，每行最多 100 个字符，去除分号，使用单引号。更多配置可以参考官方地址<a href="https://prettier.io/docs/en/options.html" target="_blank" rel="noopener">这里</a>。这样子就大功告成啦，来看下效果～</p>
-<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/prettier-play-demo-2019-12-7.gif" alt="prettier-play-demo-2019-12-7.gif"></p>
-<h3 id="团队项目开发"><a href="#团队项目开发" class="headerlink" title="团队项目开发"></a>团队项目开发</h3><p>在团队项目开发中，我们会将 prettier 工具集成到项目里面去，在提交代码的时候利用<code>githook</code>格式化代码，保证提交到远程仓库的代码是一致性的代码风格。</p>
-<ol>
-<li>在项目根目录下创建配置文件<code>.prettierrc.yml</code>，这里我使用的是 yml 语法，也可以使用<code>json</code>，<code>js</code>等文件格式。</li>
-</ol>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .prettierrc</span></span><br><span class="line"><span class="attr">tabWidth:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">useTabs:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">semi:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">singleQuote:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">trailingComma:</span> <span class="string">'es5'</span></span><br><span class="line"><span class="attr">bracketSpacing:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">jsxBracketSameLine:</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">arrowParens:</span> <span class="string">'avoid'</span></span><br></pre></td></tr></table></figure>
-<p>具体的配置信息可以参考官方文档。</p>
-<ol start="2">
-<li><code>prettier</code>支持多种<code>pre-commit hook</code>，这里介绍<code>git commit</code>时候的钩子。安装下方依赖：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add pretty-quick husky --dev</span><br></pre></td></tr></table></figure>
-<p>并且在项目的 package.json 文件中增加<code>scripts</code>：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"precommit"</span>: <span class="string">"pretty-quick --staged"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>做完上述两个步骤就能够愉快的开始开发啦～当你提交代码到 git 仓库的时候，prettier 就会自动帮你格式化哟～好了，功力未深，有错还望指正～</p>
+                <p><img src="https://images.unsplash.com/photo-1468581264429-2548ef9eb732?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80" alt="来自 unsplash"></p>
+<p>2019 年是一个蓝色的年份。就这么过了了无生趣的一年，像海水潮涨潮落般日夜拍打着礁石，空留下冲刷过后的痕迹。这一年是 10 年代最后一个年份，就像是一年里的冬季，整个行业犹如进入冰封期一样，这或许就叫资本寒冬吧。也真切地感受到了犹如冬天掉入池水般的冷。</p>
+<p>这一年我的关键词是“沉淀”。但这一年其实并没有什么值得称道的事情或者什么成就。三月份随公司其他人坐游轮去了一次日本冲绳岛 ，怀着能够看到广阔大海夜幕上星空的渴望，但最后徒留下身处如囚笼般黑夜中的大海的印象。在无所事事的海上漂泊上，只能刷着 1988 聊以慰藉。最兴奋的还是上岸，看着街上人来人往的人，看着窗外高矮不同的楼屋，总会让我陷入深思。可惜的是上岸时间有限，走马观花般地瞅一眼，就结束了这次旅程。</p>
+<p>年中经历了同事陆续地离职，团队也从十五六个人逐渐剩下七八个人。或许最初的相聚，最终也会成为一场离别。或许是人生中工作的第一家公司，对于这种事情未免还是多少有点伤感。遇到的人都相处得很好，每个人都很善良。感谢每一个遇到的人或者一起共事过的人，希望他们都能过着自己想要的生活吧。</p>
+<p>蓝色充满了忧郁。十月份开始后，由于一些事情，感觉整个人一直处于一个忧郁的状态。既迷茫又想挣脱出来。人也变得固执、拖延症发作。很多事情开始做了，遇到困难就放弃了，或者做到一半又不想做了。这样的状态反反复复持续了一段时间吧。像是一些习惯也慢慢地没有做了，比如经常记账的习惯、做运动的习惯、每周游泳的习惯，总会找些借口自己心安理得地接受。也多了一些不好的习惯，比如熬夜、经常性地感冒发烧。工作上的事情有条不紊地照常进行，但日子就这么无情地过去了。日子不好不坏，但对于我而言，这样的生活却是无趣的。没有了目标，也就没有了干劲。没有了干劲，心情就会变差。就这么陷入了怪圈之中。后来，逐渐地意识到自己确实要有所改变了。</p>
+<p>希望在 2020 年里，自己能够作出一些<strong>改变</strong>。</p>
+<ul>
+<li>从靠谱到优秀、从沉淀到<strong>改变</strong>。</li>
+<li>多做总结，无论是生活还是工作。</li>
+<li>逐渐完善自己的知识体系。</li>
+<li>将没有做完的小程序做完。</li>
+<li>多出去走走。</li>
+</ul>
 
 
                 <hr>
@@ -238,13 +212,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2018/07/11/使用-ES7-中的-Decorator-来简化代码/" data-toggle="tooltip" data-placement="top" title="使用 ES7 中的 Decorator 来简化代码">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2018/05/05/理解ES6的Proxy/" data-toggle="tooltip" data-placement="top" title="理解ES6的Proxy">Next Post &rarr;</a>
+                            <a href="/2019/12/21/二叉搜索树深度优先与广度优先遍历实现/" data-toggle="tooltip" data-placement="top" title="二叉搜索树深度优先与广度优先遍历实现">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -271,9 +241,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#prettier" title="prettier">prettier</a>
-                        
-                          <a class="tag" href="/tags/#code" title="code">code</a>
+                          <a class="tag" href="/tags/#个人总结" title="个人总结">个人总结</a>
                         
                     </div>
                 </section>

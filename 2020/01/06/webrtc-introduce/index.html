@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Thoughts, stories and ideas.">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          初识 WebRTC - Alin的博客 | Alin&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://linqhc.me/2020/01/06/webrtc-introduce/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Alin</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/header-img.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#HTML" title="HTML">HTML</a>
+                        
+                          <a class="tag" href="/tags/#WebRTC" title="WebRTC">WebRTC</a>
+                        
+                    </div>
+                    <h1>初识 WebRTC</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Alin on
+                        2020-01-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前阵子一直忙于接入云信的音视频通话，使用到了 WebRTC 技术，并且不需要使用任何插件就能实现浏览器端点对点的音视频通话。这使我对这门技术背后的原理产生了兴趣，所以查阅并阅读了相关的一些资料。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在 2008 年，Gmail 视频聊天开始流行。2011 年 Google 引入了环聊，该环聊使用 Google Talk 服务（与 Gmail 一样）。Google 收购了 GIPS，这家公司已经开发了 RTC 所需的许多组件，例如编解码器和回声消除技术。Google 开源了 GIPS 开发的技术，并与 IETF 和 W3C 的相关标准机构合作，以确保形成行业共识。2011 年 5 月，爱立信构建了 WebRTC 的第一个实现。</p>
+<p>WebRTC 为实时，无插件的视频，音频和数据通信制定了开放的标准。</p>
+<p><strong>WebRTC</strong> (Web Real-Time Communications) 是一项实时通讯技术，它允许网络应用或者站点，在不借助中间媒介的情况下，建立浏览器之间点对点（Peer-to-Peer）的连接，实现视频流和音频流或者其他任意数据的传输。如下图所示，它提供了音视频的采集、处理(降噪，回声消除等)、编解码、传输等技术。</p>
+<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/webRTC架构-2019-12-23.png?x-oss-process=style/alin" alt="webRTC架构-2019-12-23.png"></p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>实现一个 WebRTC 应用程序需要以下步骤：</p>
+<ol>
+<li>获取音视频流或者其他数据；</li>
+<li>获取 IP 地址和端口之类的网络信息，并与其他 WebRTC 客户端（peers）进行交换，以启用连接；</li>
+<li>使用信令（signaling）来管理会话连接，并在发生错误时上报;</li>
+<li>交换有关音视频流的客户端信息，例如分辨率、编解码器等信息;</li>
+<li>建立连接并开始传输音视频流。</li>
+</ol>
+<p>为了获得和传输媒体流数据， WebRTC 实现了以下 APIs：</p>
+<ul>
+<li><code>MediaStream</code>：用于访问媒体流，例如来自用户摄像头或者麦克风的数据流。</li>
+<li><code>RTCPeerConnection</code>：建立音频或视频通话连接，具有加密和带宽管理功能。</li>
+<li><code>RTCDataChannel</code>：通用数据的点对点传输。</li>
+</ul>
+<h3 id="MediaStream（getUserMedia）"><a href="#MediaStream（getUserMedia）" class="headerlink" title="MediaStream（getUserMedia）"></a>MediaStream（getUserMedia）</h3><p>MediaStream API 表示同步的媒体流。例如，从摄像机和麦克风输入获取的流具有同步的视频和音频轨道。</p>
+<p>在浏览器端，<code>MediaDevices.getUserMedia()</code> 会提示用户给予使用媒体输入的许可，媒体输入会产生一个 MediaStream，里面包含了请求的媒体类型的轨道。此流可以包含一个视频轨道（来自硬件或者虚拟视频源，比如相机、视频采集设备和屏幕共享服务等等）、一个音频轨道（同样来自硬件或虚拟音频源，比如麦克风、A/D 转换器等等），也可能是其它轨道类型。它返回一个 Promise 对象，成功后会 resolve 回调一个 MediaStream 对象。若用户拒绝了使用权限，或者需要的媒体源不可用，promise 会 reject 回调一个 <code>PermissionDeniedError</code> 或者 <code>NotFoundError</code> 。</p>
+<h4 id="获取媒体流"><a href="#获取媒体流" class="headerlink" title="获取媒体流"></a>获取媒体流</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> constraints = &#123; <span class="attr">audio</span>: <span class="literal">true</span>, <span class="attr">video</span>: <span class="literal">true</span> &#125;;</span><br><span class="line">navigator.mediaDevices</span><br><span class="line">  .getUserMedia(constraints)</span><br><span class="line">  .then(<span class="function"><span class="keyword">function</span>(<span class="params">stream</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* 使用这个stream */</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* 处理error */</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>constraints</code>：作为一个 MediaStreamConstraints 对象，指定了请求的媒体类型和相对应的参数。并且，可以设置摄像头的分辨率。</li>
+</ul>
+<h3 id="RTCPeerConnection"><a href="#RTCPeerConnection" class="headerlink" title="RTCPeerConnection"></a>RTCPeerConnection</h3><p>获取到本地媒体流后，就需要建立点对点的通信连接。RTCPeerConnection 就是用来生成一个 RTCPeerConnection 实例，该接口提供了创建，保持，监控，关闭连接的方法的实现。</p>
+<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/理想的webRTC双方通信-2019-12-23.png?x-oss-process=style/alin" alt="理想的webRTC双方通信-2019-12-23.png"></p>
+<p>如上图所示，浏览器之间媒体流的传输是 P2P 的，但是这并不意味着 webRTC 不需要服务器支持。建立 P2P 视频连接需要的信息，如用来初始化通信的 session 信息，双方的 ip、端口，视频分辨率，编解码格式等等，还是需要通过服务器来传输的。用于协调通信并发送控制消息的这种机制，就称为信令。WebRTC 并没有提供信令传递机制，我们可以使用任何喜欢的方式如 WebSocket 或者 XMLHttpRequest 等等，来交换彼此的令牌信息。</p>
+<p>信令主要用于交换三种类型的信息:</p>
+<ul>
+<li>会话控制消息：用于设置、打开、关闭通信通道并处理错误。</li>
+<li>网络配置：设备间能够彼此交谈所需的 IP 地址和端口信息。</li>
+<li>媒体能力协商：浏览器之间可以处理哪些编解码器和分辨率。</li>
+</ul>
+<p>需要注意的是，信令服务器不需要理解两个设备之间交换的数据或者对这些数据做任何处理，它仅仅作为中继转发。</p>
+<p>在实际建立连接的过程中，由于 NAT(Network Address Translation)或者防火墙的存在，P2P 通信的双方并不能直接获得对方真实的 IP 地址。<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols" target="_blank" rel="noopener">NAT（网络地址转换）</a> 在计算机网络中是一种在 IP 数据包通过路由器或防火墙时重写来源 IP 地址或目的 IP 地址的技术。因此，WebRTC 使用 ICE(Interactive Connectivity Establishment)框架，<strong>ICE</strong> 是一种综合性的 NAT 穿越技术，它整合了 <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols" target="_blank" rel="noopener">STUN</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols" target="_blank" rel="noopener">TURN</a>。当穿越网络时，ICE 会先尝试 STUN，查出自己位于哪种类型的 NAT 之后以及 NAT 为某一个本地端口所绑定的 Internet 端端口从而建立 UDP 连接，如果失败了 ICE 就会再尝试 TCP(先尝试 HTTP，再尝试 HTTPS)，如果仍然失败就使用中继的 TURN 服务器。</p>
+<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/TURN和STUN-2019-12-23.png?x-oss-process=style/alin" alt="TURN和STUN-2019-12-23.png"></p>
+<h4 id="开启-WebRTC-会话"><a href="#开启-WebRTC-会话" class="headerlink" title="开启 WebRTC 会话"></a>开启 WebRTC 会话</h4><p>开启一个 WebRTC 会话，需要以下步骤：</p>
+<ol>
+<li>实例化 RTCPeerConnection</li>
+<li>交换<strong>会话描述信息</strong>(SDP)，用于规定通信的消息格式</li>
+<li>交换 ICE 候选，用于协商两个对等店如何连接。一旦两端同意了一个互相兼容的候选，该候选的 SDP 就被用来创建并打开一个连接，通过该连接媒体流就开始传输。</li>
+</ol>
+<p>WebRTC 主要在连接建立阶段用到 SDP，连接双方通过信令服务交换会话描述信息，包括音视频编解码器(codec)、主机候选地址、网络传输协议等。一个常见的 SDP 消息如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">v=0</span><br><span class="line">o=- 7614219274584779017 2 IN IP4 127.0.0.1</span><br><span class="line">s=-</span><br><span class="line">t=0 0</span><br><span class="line">a=group:BUNDLE audio video</span><br><span class="line">a=msid-semantic: WMS</span><br><span class="line">m=audio 1 RTP/SAVPF 111 103 104 0 8 107 106 105 13 126</span><br><span class="line">c=IN IP4 0.0.0.0</span><br><span class="line">a=rtcp:1 IN IP4 0.0.0.0</span><br><span class="line">a=ice-ufrag:W2TGCZw2NZHuwlnf</span><br><span class="line">a=ice-pwd:xdQEccP40E+P0L5qTyzDgfmW</span><br><span class="line">a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level</span><br><span class="line">a=mid:audio</span><br><span class="line">a=rtcp-mux</span><br><span class="line">a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:9c1AHz27dZ9xPI91YNfSlI67/EMkjHHIHORiClQe</span><br><span class="line">a=rtpmap:111 opus/48000/2</span><br><span class="line">…</span><br></pre></td></tr></table></figure>
+<p>实例化 RTCPeerConnection 后就需要交换 SDP 信息，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> peer = <span class="keyword">new</span> RTCPeerConnection();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于发送端</span></span><br><span class="line"><span class="keyword">const</span> offer = <span class="keyword">await</span> peer.createOffer();</span><br><span class="line"><span class="keyword">await</span> peer.setLocalDescription(offer);</span><br><span class="line">socket.send(<span class="built_in">JSON</span>.stringify(offer));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于接收端</span></span><br><span class="line"><span class="keyword">if</span> (offerSdp) &#123;</span><br><span class="line">  <span class="keyword">await</span> peer.setRemoteDescription(offerSdp);</span><br><span class="line">  <span class="keyword">const</span> answer = <span class="keyword">await</span> peer.createAnswer();</span><br><span class="line">  socket.send(<span class="built_in">JSON</span>.stringify(answer));</span><br><span class="line">  <span class="keyword">await</span> peer.setLocalDescription(answer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于发送端来说，需要创建本地 SDP，并且将本地 SDP 发送至接收端。接收端收到对端 SDP 后，创建一个应答 SDP，通过 socket 返回给发送端，并且将其应答 SDP 作为本地描述。这样就实现了双方 SDP 的交换。接下来就是 ICE 的收集并交换，这个过程可以看成“打洞”，只有双方连接成功后，才能实现通信。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听onicecandidate事件</span></span><br><span class="line">peer.onicecandidate = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (e.candidate) &#123;</span><br><span class="line">    <span class="comment">// 收集并且交换 ICE 候选者信息</span></span><br><span class="line">    socket.send(</span><br><span class="line">      <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        type: <span class="string">`<span class="subst">$&#123;target&#125;</span>_ice`</span>,</span><br><span class="line">        iceCandidate: e.candidate,</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// candidate 为 NULL 表示已收集完成</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>onicecandidate</code> 方法在本地代理 ICE 需要通过信令服务器传递信息给其他对等端时就会触发。当本地当前页面的 RTCPeerConnection 接收到一个从远端页面通过信号通道发来的新的 ICE 候选地址信息，本地可以通过调用<code>RTCPeerConnection.addIceCandidate()</code> 来添加一个 ICE 代理。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer.addIceCandidate(iceCandidate);</span><br></pre></td></tr></table></figure>
+<p>这样就实现了 P2P 双方连接的互通。</p>
+<p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/WebRTC-通话建立过程-2020-1-6.png?x-oss-process=style/alin" alt="WebRTC-通话建立过程-2020-1-6.png"></p>
+<p>上图反映了通过信令服务器，交换会话描述信息和交换 ICE 候选的过程。</p>
+<h4 id="传输音视频流"><a href="#传输音视频流" class="headerlink" title="传输音视频流"></a>传输音视频流</h4><p>实现了 WebRTC 双方连接成功后，接下来，就可以开始传输音视频流啦。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取本地视频流</span></span><br><span class="line"><span class="keyword">let</span> stream = <span class="keyword">await</span> navigator.mediaDevices.getUserMedia(&#123;</span><br><span class="line">  video: <span class="literal">true</span>,</span><br><span class="line">  audio: <span class="literal">true</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 将本地视频流添加至 本地端 video 标签上</span></span><br><span class="line">localVideo.srcObject = stream;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听收到对端的音视频流数据</span></span><br><span class="line">peer.ontrack = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (e &amp;&amp; e.streams) &#123;</span><br><span class="line">    <span class="comment">// 将对端视频流添加至 远程端 video 标签上</span></span><br><span class="line">    remoteVideo.srcObject = e.streams[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将轨道发送至另一端</span></span><br><span class="line">stream.getTracks().forEach(<span class="function"><span class="params">track</span> =&gt;</span> &#123;</span><br><span class="line">  peer.addTrack(track, stream);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>至此，就实现了音视频流的传输，我们也就能够在页面上看到自己和对方摄像头的画面。</p>
+<h2 id="简单实现"><a href="#简单实现" class="headerlink" title="简单实现"></a>简单实现</h2><p><img src="https://allin-bucket.oss-cn-beijing.aliyuncs.com/blog/WebRTC-发起方流程-2019-12-24.png?x-oss-process=style/alin" alt="WebRTC-发起方流程-2019-12-24.png"></p>
+<p>具体代码可以查看 <a href="https://github.com/heiyelin/code/tree/master/html/webrtc" target="_blank" rel="noopener">github</a>。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>WebRTC 为我们带来了 Web 音视频通信新的解决方案，同时，它也有着一些优点与缺点。</p>
+<p>优点：</p>
+<ul>
+<li>方便。无需安装插件，使用简单的 HTML 标签与 Javascript API 就能实现 Web 音视频通信的功能。</li>
+<li>免费。其集成了最佳的音/视频引擎，十分先进的 codec。</li>
+<li>强大的打洞能力。WebRTC 技术包含了使用 STUN、ICE、TURN、RTP-over-TCP 的关键 NAT 和防火墙穿透技术，并支持代理。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>缺乏服务器方案的设计和部署。</li>
+<li>传输质量难以保证。WebRTC 的传输设计基于 P2P，难以保障传输质量，优化手段也有限，只能做一些端到端的优化，难以应对复杂的互联网环境。比如对跨地区、跨运营商、低带宽、高丢包等场景下的传输质量基本是靠天吃饭，而这恰恰是国内互联网应用的典型场景。</li>
+<li>WebRTC 比较适合一对一的单聊，虽然功能上可以扩展实现群聊，但是没有针对群聊，特别是超大群聊进行任何优化。</li>
+<li>设备端适配，如回声、录音失败等问题层出不穷。</li>
+<li>对 Native 开发支持不够。</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://www.html5rocks.com/en/tutorials/webrtc/basics" target="_blank" rel="noopener">Getting Started with WebRTC</a></li>
+<li><a href="https://segmentfault.com/a/1190000020780854" target="_blank" rel="noopener">50 行代码完成视频通话 (WebRTC + WebSocket)</a></li>
+<li><a href="https://segmentfault.com/a/1190000011767066" target="_blank" rel="noopener">webRTC——浏览器里的音视频通话</a></li>
+<li><a href="https://juejin.im/post/5c3acfa56fb9a049f36254be" target="_blank" rel="noopener">【从头到脚】撸一个多人视频聊天 — 前端 WebRTC 实战（一）</a></li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/01/05/The-Blue-In-2019/" data-toggle="tooltip" data-placement="top" title="The Blue In 2019">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#HTML" title="HTML">HTML</a>
+                        
+                          <a class="tag" href="/tags/#WebRTC" title="WebRTC">WebRTC</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://github.com/heiyelin">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Alin 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://linqhc.me/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://linqhc.me/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
